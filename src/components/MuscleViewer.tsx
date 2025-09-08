@@ -31,7 +31,8 @@ export default function MuscleViewer() {
     controls.screenSpacePanning = true; // vertical drag = move up/down
     controls.rotateSpeed = 1.0;
     controls.panSpeed = 1.2;
-    controls.autoRotate = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.6;
 
     // ✅ Built-in zoom-to-cursor
     controls.enableZoom = true;
@@ -127,7 +128,7 @@ export default function MuscleViewer() {
       camera.updateProjectionMatrix();
 
       // Zoom limits (tweak to taste)
-      controls.minDistance = dist * 0.35;
+      controls.minDistance = dist * 0.2;
       controls.maxDistance = dist * 0.9;
     };
 
@@ -232,5 +233,5 @@ export default function MuscleViewer() {
     };
   }, []);
 
-  return <div ref={containerRef} className="w-full h-[80vh]" />;
+  return <div ref={containerRef} className="w-full h-[100vh]" />;
 }
