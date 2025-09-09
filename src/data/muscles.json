@@ -1,45 +1,101 @@
 [
   {
+    "slug": "trapezius",
+    "name": "Trapezius",
+    "accepted": ["trapezius", "trap", "traps"],
+    "oiia": {
+      "origin": "Medial third of superior nuchal line; external occipital protuberance; nuchal ligament; spinous processes of C7–T12 vertebrae",
+      "insertion": "Lateral third of clavicle; acromion and spine of scapula",
+      "innervation": "Spinal accessory nerve (CN XI) and C3–C4 (sensory/proprioception)",
+      "action": "Upper elevates; lower depresses; middle retracts; upper+lower rotate glenoid superiorly"
+    }
+  },
+  {
+    "slug": "latissimus-dorsi",
+    "name": "Latissimus dorsi",
+    "accepted": ["latissimus dorsi", "lat dorsi", "lats", "lat"],
+    "oiia": {
+      "origin": "SPs of inferior 6 thoracic vertebrae; thoracolumbar fascia; iliac crest; inferior 3–4 ribs",
+      "insertion": "Floor of intertubercular sulcus of humerus",
+      "innervation": "Thoracodorsal nerve (C6–C8)",
+      "action": "Extends, adducts, and medially rotates humerus; raises body during climbing"
+    }
+  },
+  {
+    "slug": "levator-scapulae",
+    "name": "Levator scapulae",
+    "accepted": ["levator scapulae", "levator"],
+    "oiia": {
+      "origin": "Posterior tubercles of TVPs C1–C4",
+      "insertion": "Medial border of scapula superior to root of spine",
+      "innervation": "Dorsal scapular (C4–C5) and cervical nerves (C3–C4)",
+      "action": "Elevates scapula; rotates glenoid cavity inferiorly"
+    }
+  },
+  {
+    "slug": "rhomboid-minor",
+    "name": "Rhomboid minor",
+    "accepted": ["rhomboid minor", "rhomboid"],
+    "oiia": {
+      "origin": "Nuchal ligament; SPs C7–T1",
+      "insertion": "Smooth triangular area at medial end of scapular spine",
+      "innervation": "Dorsal scapular (C4–C5)",
+      "action": "Retracts scapula; rotates glenoid inferiorly; fixes scapula to thoracic wall"
+    }
+  },
+  {
+    "slug": "rhomboid-major",
+    "name": "Rhomboid major",
+    "accepted": ["rhomboid major", "rhomboid"],
+    "oiia": {
+      "origin": "SPs T2–T5",
+      "insertion": "Medial border of scapula from level of spine to inferior angle",
+      "innervation": "Dorsal scapular (C4–C5)",
+      "action": "Retracts scapula; rotates glenoid inferiorly; fixes scapula to thoracic wall"
+    }
+  },
+  {
+    "slug": "pectoralis-major",
     "name": "Pectoralis major",
-    "proximalAttachment": [
-      "Clavicular head: anterior surface of medial half of clavicle",
-      "Sternocostal head: anterior surface of sternum, superior six costal cartilages, aponeurosis of external oblique muscle"
-    ],
-    "distalAttachment": "Lateral lip of intertubercular sulcus of humerus",
-    "innervation": [
-      "Lateral and medial pectoral nerves",
-      "Clavicular head: C5, C6",
-      "Sternocostal head: C7, C8, T1"
-    ],
-    "mainAction": [
-      "Adducts and medially rotates humerus",
-      "Draws scapula anteriorly and inferiorly",
-      "Acting alone, clavicular head flexes humerus",
-      "Sternocostal head extends humerus from the flexed position"
-    ]
+    "accepted": ["pectoralis major", "pec major", "pecs", "pec"],
+    "oiia": {
+      "origin": "Clavicular head: anterior medial 1/2 clavicle; Sternocostal head: sternum, costal cartilages 1–6, external oblique aponeurosis",
+      "insertion": "Lateral lip of intertubercular sulcus of humerus",
+      "innervation": "Lateral & medial pectoral nerves (C5–T1)",
+      "action": "Adducts & IR humerus; clavicular head flexes; sternocostal head extends from flexed"
+    }
   },
   {
+    "slug": "pectoralis-minor",
     "name": "Pectoralis minor",
-    "proximalAttachment": "3rd–5th ribs near their costal cartilages",
-    "distalAttachment": "Medial border and superior surface of coracoid process of scapula",
-    "innervation": "Medial pectoral nerve (C8, T1)",
-    "mainAction": "Stabilizes scapula by drawing it inferiorly and anteriorly against thoracic wall"
+    "accepted": ["pectoralis minor", "pec minor"],
+    "oiia": {
+      "origin": "Ribs 3–5 near costal cartilages",
+      "insertion": "Medial border & superior surface of coracoid process",
+      "innervation": "Medial pectoral nerve (C8–T1)",
+      "action": "Stabilizes scapula by drawing it anterior & inferior against thorax"
+    }
   },
   {
+    "slug": "subclavius",
     "name": "Subclavius",
-    "proximalAttachment": "Junction of 1st rib and its costal cartilage",
-    "distalAttachment": "Inferior surface of middle third of clavicle",
-    "innervation": "Nerve to subclavius (C5, C6)",
-    "mainAction": "Anchors and depresses clavicle"
+    "accepted": ["subclavius"],
+    "oiia": {
+      "origin": "Junction of 1st rib & its costal cartilage",
+      "insertion": "Inferior surface of middle third of clavicle",
+      "innervation": "Nerve to subclavius (C5–C6)",
+      "action": "Anchors & depresses clavicle"
+    }
   },
   {
+    "slug": "serratus-anterior",
     "name": "Serratus anterior",
-    "proximalAttachment": "External surfaces of lateral parts of 1st–8th ribs",
-    "distalAttachment": "Anterior surface of medial border of scapula",
-    "innervation": "Long thoracic nerve (C5, C6, C7)",
-    "mainAction": [
-      "Protracts scapula and holds it against thoracic wall",
-      "Rotates scapula"
-    ]
+    "accepted": ["serratus anterior", "serratus"],
+    "oiia": {
+      "origin": "External surfaces of lateral parts of ribs 1–8",
+      "insertion": "Anterior surface of medial border of scapula",
+      "innervation": "Long thoracic nerve (C5–C7)",
+      "action": "Protracts scapula; holds against thoracic wall; rotates scapula"
+    }
   }
 ]

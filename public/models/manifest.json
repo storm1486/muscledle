@@ -1,7 +1,7 @@
 [
   "/models/abductor-pollicis-longus.glb",
   "/models/anconeus.glb",
-  "/models/biceps-brachii-right.glb",
+  "/models/biceps-brachii.glb",
   "/models/brachialis.glb",
   "/models/brachioradialis.glb",
   "/models/coracobrachialis.glb",
@@ -38,5 +38,5 @@
   "/models/teres-major.glb",
   "/models/teres-minor.glb",
   "/models/trapezius.glb",
-  "/models/triceps-brachii-right.glb"
+  "/models/triceps-brachii.glb"
 ]
