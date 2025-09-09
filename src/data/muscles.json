@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Pectoralis major",
+    "proximalAttachment": [
+      "Clavicular head: anterior surface of medial half of clavicle",
+      "Sternocostal head: anterior surface of sternum, superior six costal cartilages, aponeurosis of external oblique muscle"
+    ],
+    "distalAttachment": "Lateral lip of intertubercular sulcus of humerus",
+    "innervation": [
+      "Lateral and medial pectoral nerves",
+      "Clavicular head: C5, C6",
+      "Sternocostal head: C7, C8, T1"
+    ],
+    "mainAction": [
+      "Adducts and medially rotates humerus",
+      "Draws scapula anteriorly and inferiorly",
+      "Acting alone, clavicular head flexes humerus",
+      "Sternocostal head extends humerus from the flexed position"
+    ]
+  },
+  {
+    "name": "Pectoralis minor",
+    "proximalAttachment": "3rd–5th ribs near their costal cartilages",
+    "distalAttachment": "Medial border and superior surface of coracoid process of scapula",
+    "innervation": "Medial pectoral nerve (C8, T1)",
+    "mainAction": "Stabilizes scapula by drawing it inferiorly and anteriorly against thoracic wall"
+  },
+  {
+    "name": "Subclavius",
+    "proximalAttachment": "Junction of 1st rib and its costal cartilage",
+    "distalAttachment": "Inferior surface of middle third of clavicle",
+    "innervation": "Nerve to subclavius (C5, C6)",
+    "mainAction": "Anchors and depresses clavicle"
+  },
+  {
+    "name": "Serratus anterior",
+    "proximalAttachment": "External surfaces of lateral parts of 1st–8th ribs",
+    "distalAttachment": "Anterior surface of medial border of scapula",
+    "innervation": "Long thoracic nerve (C5, C6, C7)",
+    "mainAction": [
+      "Protracts scapula and holds it against thoracic wall",
+      "Rotates scapula"
+    ]
+  }
+]

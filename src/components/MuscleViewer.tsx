@@ -1,14 +1,63 @@
+// components/MuscleViewer.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-export default function MuscleViewer() {
+export type MuscleViewerHandle = {
+  next: () => void;
+};
+
+const MuscleViewer = forwardRef<MuscleViewerHandle, {}>(function MuscleViewer(
+  _props,
+  ref
+) {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [list, setList] = useState<string[]>([]);
+  const [muscleUrl, setMuscleUrl] = useState<string | null>(null);
+  const [lastUrl, setLastUrl] = useState<string | null>(null);
+
+  function pickRandom(from?: string[]) {
+    const pool = from ?? list;
+    if (!pool || pool.length === 0) return;
+    let pick: string;
+    do {
+      pick = pool[Math.floor(Math.random() * pool.length)];
+    } while (pool.length > 1 && pick === lastUrl);
+    setLastUrl(pick);
+    setMuscleUrl(pick);
+  }
+
+  // expose next() to parent
+  useImperativeHandle(ref, () => ({
+    next: () => pickRandom(),
+  }));
+
+  // fetch manifest once and pick first muscle
   useEffect(() => {
+    fetch("/models/manifest.json")
+      .then((r) => r.json())
+      .then((files: string[]) => {
+        const pool = (files || []).filter((p) => !/skeleton\.glb$/i.test(p));
+        setList(pool);
+        pickRandom(pool);
+      })
+      .catch(console.error);
+  }, []);
+
+  // --- your existing Three.js effect, dependent on muscleUrl (kept as-is) ---
+  useEffect(() => {
+    if (!muscleUrl) return;
+
     const el = containerRef.current!;
     const w = el.clientWidth,
       h = el.clientHeight;
@@ -17,7 +66,7 @@ export default function MuscleViewer() {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setSize(w, h);
     el.appendChild(renderer.domElement);
-    const canvas = renderer.domElement; // ← use canvas for events
+    const canvas = renderer.domElement;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x111111);
@@ -25,65 +74,51 @@ export default function MuscleViewer() {
     const camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 1000);
     const controls = new OrbitControls(camera, canvas);
 
-    // ---- controls config ----
     controls.enableDamping = true;
     controls.enablePan = true;
-    controls.screenSpacePanning = true; // vertical drag = move up/down
+    controls.screenSpacePanning = true;
     controls.rotateSpeed = 1.0;
     controls.panSpeed = 1.2;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.6;
-
-    // ✅ Built-in zoom-to-cursor
     controls.enableZoom = true;
-    (controls as any).zoomToCursor = true; // available in recent three.js
-    controls.zoomSpeed = 1.0; // tweak: smaller = slower, bigger = faster
+    (controls as any).zoomToCursor = true;
+    controls.zoomSpeed = 1.0;
 
-    // Dynamically switch LEFT button between ROTATE (horizontal) and PAN (vertical)
     let dragMode: "rotate" | "pan" | null = null;
     let sx = 0,
       sy = 0;
-
-    function setLeftToRotate() {
-      controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
-    }
-    function setLeftToPan() {
-      controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
-    }
-    setLeftToRotate(); // default
+    const setLeftToRotate = () =>
+      (controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE);
+    const setLeftToPan = () => (controls.mouseButtons.LEFT = THREE.MOUSE.PAN);
+    setLeftToRotate();
 
     const pointerDown = (e: PointerEvent) => {
-      if (e.button !== 0) return; // left only
+      if (e.button !== 0) return;
       dragMode = null;
       sx = e.clientX;
       sy = e.clientY;
       canvas.setPointerCapture(e.pointerId);
     };
-
     const pointerMove = (e: PointerEvent) => {
-      if ((e.buttons & 1) === 0) return; // left not held
+      if ((e.buttons & 1) === 0) return;
       if (!dragMode) {
-        const dx = e.clientX - sx;
-        const dy = e.clientY - sy;
-        if (Math.hypot(dx, dy) < 4) return; // small threshold
+        const dx = e.clientX - sx,
+          dy = e.clientY - sy;
+        if (Math.hypot(dx, dy) < 4) return;
         if (Math.abs(dy) > Math.abs(dx)) {
-          // mostly vertical → PAN
           dragMode = "pan";
           setLeftToPan();
-          // If you want drag-down to move the model UP, invert pan speed:
-          // controls.panSpeed = -Math.abs(controls.panSpeed);
         } else {
-          // mostly horizontal → ROTATE
           dragMode = "rotate";
           setLeftToRotate();
         }
       }
     };
-
     const pointerUp = (e: PointerEvent) => {
       if (e.button !== 0) return;
       dragMode = null;
-      setLeftToRotate(); // reset for next drag
+      setLeftToRotate();
     };
 
     canvas.addEventListener("pointerdown", pointerDown);
@@ -91,33 +126,27 @@ export default function MuscleViewer() {
     canvas.addEventListener("pointerup", pointerUp);
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 
-    // ---- lights ----
     scene.add(new THREE.HemisphereLight(0xffffff, 0x222222, 0.8));
     const dir = new THREE.DirectionalLight(0xffffff, 1.0);
     dir.position.set(2, 2, 3);
     scene.add(dir);
 
-    // ---- group: skeleton + muscle ----
     const root = new THREE.Group();
     scene.add(root);
 
-    let sceneSphere: THREE.Sphere | null = null;
-    let sceneBox: THREE.Box3 | null = null; // expanded AABB for clamping
-    let panBox: THREE.Box3 | null = null; // for clamping target while panning
+    let panBox: THREE.Box3 | null = null;
     const ORIGIN = new THREE.Vector3(0, 0, 0);
     let loaded = 0;
+
     const tryFrame = () => {
       if (loaded < 2) return;
       const box = new THREE.Box3().setFromObject(root);
       const sphere = new THREE.Sphere();
       box.getBoundingSphere(sphere);
 
-      // NEW: keep a padded box around the model for clamping the target
-      panBox = box.clone().expandByScalar(0.1 * sphere.radius); // 10% padding
-
-      root.position.sub(sphere.center); // center group at origin
+      panBox = box.clone().expandByScalar(0.1 * sphere.radius);
+      root.position.sub(sphere.center);
       controls.target.set(0, 0, 0);
-
       controls.update();
 
       const fov = THREE.MathUtils.degToRad(camera.fov);
@@ -127,60 +156,44 @@ export default function MuscleViewer() {
       camera.far = dist * 100;
       camera.updateProjectionMatrix();
 
-      // Zoom limits (tweak to taste)
       controls.minDistance = dist * 0.2;
       controls.maxDistance = dist * 0.9;
     };
 
     const loader = new GLTFLoader();
 
-    // skeleton
-    loader.load(
-      "/models/skeleton.glb",
-      (gltf) => {
-        const skeleton = gltf.scene;
-        skeleton.traverse((o: any) => {
-          if (o.isMesh) {
-            o.material = new THREE.MeshStandardMaterial({
-              color: 0x444444,
-              roughness: 1,
-              metalness: 0,
-              transparent: true,
-              opacity: 0.6,
-            });
-          }
-        });
-        root.add(skeleton);
-        loaded++;
-        tryFrame();
-      },
-      undefined,
-      (e) => console.error("Skeleton load error:", e)
-    );
+    loader.load("/models/skeleton.glb", (gltf) => {
+      gltf.scene.traverse((o: any) => {
+        if (o.isMesh) {
+          o.material = new THREE.MeshStandardMaterial({
+            color: 0x444444,
+            roughness: 1,
+            metalness: 0,
+            transparent: true,
+            opacity: 0.6,
+          });
+        }
+      });
+      root.add(gltf.scene);
+      loaded++;
+      tryFrame();
+    });
 
-    // muscle
-    loader.load(
-      "/models/rhomboid-major.glb",
-      (gltf) => {
-        const muscle = gltf.scene;
-        muscle.traverse((o: any) => {
-          if (o.isMesh) {
-            o.material = new THREE.MeshStandardMaterial({
-              color: 0xc84d4d,
-              roughness: 0.9,
-              metalness: 0,
-            });
-          }
-        });
-        root.add(muscle);
-        loaded++;
-        tryFrame();
-      },
-      undefined,
-      (e) => console.error("Muscle load error:", e)
-    );
+    loader.load(muscleUrl, (gltf) => {
+      gltf.scene.traverse((o: any) => {
+        if (o.isMesh) {
+          o.material = new THREE.MeshStandardMaterial({
+            color: 0xc84d4d,
+            roughness: 0.9,
+            metalness: 0,
+          });
+        }
+      });
+      root.add(gltf.scene);
+      loaded++;
+      tryFrame();
+    });
 
-    // ---- resize & loop ----
     const onResize = () => {
       const W = el.clientWidth,
         H = el.clientHeight;
@@ -192,7 +205,6 @@ export default function MuscleViewer() {
 
     let raf = 0;
     const loop = () => {
-      // --- keep the target near the model ---
       if (panBox) {
         controls.target.set(
           THREE.MathUtils.clamp(controls.target.x, panBox.min.x, panBox.max.x),
@@ -200,15 +212,10 @@ export default function MuscleViewer() {
           THREE.MathUtils.clamp(controls.target.z, panBox.min.z, panBox.max.z)
         );
       }
-
-      // --- if user has zoomed out near max, gently re-center the target ---
-      const camOffset = camera.position.clone().sub(controls.target);
-      const distNow = camOffset.length();
+      const distNow = camera.position.clone().sub(controls.target).length();
       if (controls.maxDistance && distNow > controls.maxDistance * 0.95) {
-        // pull target toward the model center a bit each frame
-        controls.target.lerp(ORIGIN, 0.15); // increase 0.15 -> 0.3 for faster recenters
+        controls.target.lerp(ORIGIN, 0.15);
       }
-
       controls.update();
       renderer.render(scene, camera);
       raf = requestAnimationFrame(loop);
@@ -231,7 +238,9 @@ export default function MuscleViewer() {
         }
       });
     };
-  }, []);
+  }, [muscleUrl]);
 
   return <div ref={containerRef} className="w-full h-[100vh]" />;
-}
+});
+
+export default MuscleViewer;

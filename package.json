@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:models": "node scripts/generate-model-manifest.mjs",
+    "build": "npm run build:models && next build"
   },
   "dependencies": {
     "next": "15.5.2",
