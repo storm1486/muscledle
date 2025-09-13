@@ -209,7 +209,7 @@ export default function MusclePage() {
                              text-white placeholder-slate-400 outline-none transition-all duration-200
                              focus:border-emerald-500/50 focus:bg-slate-800/70 focus:ring-2 focus:ring-emerald-500/20
                              disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="e.g., Pectoralis major, Biceps, Quadriceps..."
+                    placeholder="Type Name of Muscle Displayed"
                     value={guess}
                     onChange={(e) => setGuess(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && submitGuess()}
@@ -331,28 +331,6 @@ export default function MusclePage() {
                     )}
                   </div>
                 )}
-              </div>
-            </div>
-          </div>
-
-          {/* Footer Tip */}
-          <div className="p-6 border-t border-slate-700/50">
-            <div className="bg-slate-800/30 rounded-lg p-4">
-              <div className="flex items-start gap-2">
-                <span className="text-blue-400 text-sm">💡</span>
-                <div className="text-slate-400 text-xs leading-relaxed">
-                  <p className="mb-1">
-                    <strong className="text-slate-300">Pro tip:</strong> Common
-                    abbreviations and synonyms are accepted (e.g., "pec major",
-                    "traps", "lats", "quads").
-                  </p>
-                  <p className="text-slate-500">
-                    Configure accepted terms in{" "}
-                    <code className="bg-slate-700/50 px-1 rounded">
-                      /data/muscles.json
-                    </code>
-                  </p>
-                </div>
               </div>
             </div>
           </div>

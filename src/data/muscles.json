@@ -97,5 +97,445 @@
       "innervation": "Long thoracic nerve (C5–C7)",
       "action": "Protracts scapula; holds against thoracic wall; rotates scapula"
     }
+  },
+  {
+    "slug": "deltoid",
+    "name": "Deltoid",
+    "accepted": ["deltoid", "delt"],
+    "oiia": {
+      "origin": "Lateral third of clavicle; acromion and spine of scapula",
+      "insertion": "Deltoid tuberosity of humerus",
+      "innervation": "Axillary nerve (C5, C6)",
+      "action": "Clavicular (anterior) part: flexes and medially rotates arm; Acromial (middle) part: abducts arm; Spinal (posterior) part: extends and laterally rotates arm"
+    }
+  },
+  {
+    "slug": "supraspinatus",
+    "name": "Supraspinatus",
+    "accepted": ["supraspinatus"],
+    "oiia": {
+      "origin": "Supraspinous fossa of scapula",
+      "insertion": "Superior facet of greater tubercle of humerus",
+      "innervation": "Suprascapular nerve (C4, C5, C6)",
+      "action": "Initiates and assists deltoid in abduction of arm; acts with other rotator cuff muscles"
+    }
+  },
+  {
+    "slug": "infraspinatus",
+    "name": "Infraspinatus",
+    "accepted": ["infraspinatus"],
+    "oiia": {
+      "origin": "Infraspinous fossa of scapula",
+      "insertion": "Middle facet of greater tubercle of humerus",
+      "innervation": "Suprascapular nerve (C5, C6)",
+      "action": "Laterally rotates arm; acts with other rotator cuff muscles"
+    }
+  },
+  {
+    "slug": "teres-minor",
+    "name": "Teres minor",
+    "accepted": ["teres minor"],
+    "oiia": {
+      "origin": "Middle part of lateral border of scapula",
+      "insertion": "Inferior facet of greater tubercle of humerus",
+      "innervation": "Axillary nerve (C5, C6)",
+      "action": "Laterally rotates arm; acts with other rotator cuff muscles"
+    }
+  },
+  {
+    "slug": "teres-major",
+    "name": "Teres major",
+    "accepted": ["teres major"],
+    "oiia": {
+      "origin": "Posterior surface of inferior angle of scapula",
+      "insertion": "Medial lip of intertubercular sulcus of humerus",
+      "innervation": "Lower subscapular nerve (C5, C6)",
+      "action": "Adducts and medially rotates arm"
+    }
+  },
+  {
+    "slug": "subscapularis",
+    "name": "Subscapularis",
+    "accepted": ["subscapularis"],
+    "oiia": {
+      "origin": "Subscapular fossa (most of anterior surface of scapula)",
+      "insertion": "Lesser tubercle of humerus",
+      "innervation": "Upper and lower subscapular nerves (C5, C6, C7)",
+      "action": "Medially rotates arm; as part of rotator cuff, helps hold humeral head in glenoid cavity"
+    }
+  },
+  {
+    "slug": "biceps-brachii",
+    "name": "Biceps brachii",
+    "accepted": ["biceps brachii", "biceps", "bi"],
+    "oiia": {
+      "origin": "Short head: tip of coracoid process of scapula; Long head: supraglenoid tubercle of scapula",
+      "insertion": "Tuberosity of radius and fascia of forearm via bicipital aponeurosis",
+      "innervation": "Musculocutaneous nerve (C5, C6, C7)",
+      "action": "Supinates forearm and, when supine, flexes forearm; short head resists dislocation of shoulder"
+    }
+  },
+  {
+    "slug": "coracobrachialis",
+    "name": "Coracobrachialis",
+    "accepted": ["coracobrachialis"],
+    "oiia": {
+      "origin": "Tip of coracoid process of scapula",
+      "insertion": "Middle third of medial surface of humerus",
+      "innervation": "Musculocutaneous nerve (C5, C6, C7)",
+      "action": "Helps flex and adduct arm; resists dislocation of shoulder"
+    }
+  },
+  {
+    "slug": "brachialis",
+    "name": "Brachialis",
+    "accepted": ["brachialis"],
+    "oiia": {
+      "origin": "Distal half of anterior surface of humerus",
+      "insertion": "Coronoid process and tuberosity of ulna",
+      "innervation": "Musculocutaneous nerve (C5, C6) and radial nerve (C5, C7)",
+      "action": "Flexes forearm in all positions"
+    }
+  },
+  {
+    "slug": "triceps-brachii",
+    "name": "Triceps brachii",
+    "accepted": ["triceps brachii", "triceps", "tris"],
+    "oiia": {
+      "origin": "Long head: infraglenoid tubercle of scapula; Lateral head: posterior surface of humerus, superior to radial groove; Medial head: posterior surface of humerus, inferior to radial groove",
+      "insertion": "Proximal end of olecranon of ulna and fascia of forearm",
+      "innervation": "Radial nerve (C6, C7, C8)",
+      "action": "Chief extensor of forearm; long head resists dislocation of humerus; especially important during adduction"
+    }
+  },
+  {
+    "slug": "anconeus",
+    "name": "Anconeus",
+    "accepted": ["anconeus"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus",
+      "insertion": "Lateral surface of olecranon and superior part of posterior surface of ulna",
+      "innervation": "Radial nerve (C7, C8, T1)",
+      "action": "Assists triceps in extending forearm; stabilizes elbow joint; may abduct ulna during pronation"
+    }
+  },
+  {
+    "slug": "pronator-teres",
+    "name": "Pronator teres",
+    "accepted": ["pronator teres"],
+    "oiia": {
+      "origin": "Ulnar head: coronoid process; Humeral head: medial epicondyle of humerus (common flexor origin)",
+      "insertion": "Middle of convexity of lateral surface of radius",
+      "innervation": "Median nerve (C6, C7)",
+      "action": "Pronates and flexes forearm at elbow"
+    }
+  },
+  {
+    "slug": "flexor-carpi-radialis",
+    "name": "Flexor carpi radialis",
+    "accepted": ["flexor carpi radialis", "fcr"],
+    "oiia": {
+      "origin": "Medial epicondyle of humerus (common flexor origin)",
+      "insertion": "Base of 2nd metacarpal",
+      "innervation": "Median nerve (C6, C7)",
+      "action": "Flexes and abducts hand at wrist"
+    }
+  },
+  {
+    "slug": "palmaris-longus",
+    "name": "Palmaris longus",
+    "accepted": ["palmaris longus"],
+    "oiia": {
+      "origin": "Medial epicondyle of humerus (common flexor origin)",
+      "insertion": "Distal half of flexor retinaculum and apex of palmar aponeurosis",
+      "innervation": "Median nerve (C7, C8)",
+      "action": "Flexes hand at wrist and tenses palmar aponeurosis"
+    }
+  },
+  {
+    "slug": "flexor-carpi-ulnaris",
+    "name": "Flexor carpi ulnaris",
+    "accepted": ["flexor carpi ulnaris", "fcu"],
+    "oiia": {
+      "origin": "Humeral head: medial epicondyle of humerus; Ulnar head: olecranon and posterior border of ulna",
+      "insertion": "Pisiform, hook of hamate, 5th metacarpal",
+      "innervation": "Ulnar nerve (C7, C8)",
+      "action": "Flexes and adducts hand at wrist"
+    }
+  },
+  {
+    "slug": "flexor-digitorum-superficialis",
+    "name": "Flexor digitorum superficialis",
+    "accepted": ["flexor digitorum superficialis", "fds"],
+    "oiia": {
+      "origin": "Humero-ulnar head: medial epicondyle of humerus and coronoid process; Radial head: superior half of anterior border of radius",
+      "insertion": "Shafts of middle phalanges of medial four digits",
+      "innervation": "Median nerve (C7, C8, T1)",
+      "action": "Flexes middle phalanges at proximal interphalangeal joints of middle four digits; more strongly, flexes proximal phalanges at metacarpophalangeal joints"
+    }
+  },
+  {
+    "slug": "flexor-digitorum-profundus",
+    "name": "Flexor digitorum profundus",
+    "accepted": ["flexor digitorum profundus", "fdp"],
+    "oiia": {
+      "origin": "Proximal three quarters of medial and anterior surfaces of ulna and interosseous membrane",
+      "insertion": "Medial part: bases of distal phalanges of 4th and 5th digits; Lateral part: bases of distal phalanges of 2nd and 3rd digits",
+      "innervation": "Medial part: ulnar nerve (C8, T1); Lateral part: anterior interosseous nerve from median nerve (C8, T1)",
+      "action": "Flexes distal phalanges 4 and 5 at distal interphalangeal joints (medial part); Flexes distal phalanges 2 and 3 at distal interphalangeal joints (lateral part)"
+    }
+  },
+  {
+    "slug": "flexor-pollicis-longus",
+    "name": "Flexor pollicis longus",
+    "accepted": ["flexor pollicis longus", "fpl"],
+    "oiia": {
+      "origin": "Anterior surface of radius and adjacent interosseous membrane",
+      "insertion": "Base of distal phalanx of thumb",
+      "innervation": "Anterior interosseous nerve, from median nerve (C8, T1)",
+      "action": "Flexes phalanges of thumb"
+    }
+  },
+  {
+    "slug": "pronator-quadratus",
+    "name": "Pronator quadratus",
+    "accepted": ["pronator quadratus"],
+    "oiia": {
+      "origin": "Distal quarter of anterior surface of ulna",
+      "insertion": "Distal quarter of anterior surface of radius",
+      "innervation": "Anterior interosseous nerve, from median nerve (C8, T1)",
+      "action": "Pronates forearm; deep fibers bind radius and ulna together"
+    }
+  },
+  {
+    "slug": "brachioradialis",
+    "name": "Brachioradialis",
+    "accepted": ["brachioradialis"],
+    "oiia": {
+      "origin": "Proximal two thirds of lateral supra-epicondylar ridge of humerus",
+      "insertion": "Lateral surface of distal end of radius proximal to styloid process",
+      "innervation": "Radial nerve (C5, C6, C7)",
+      "action": "Relatively weak flexion of forearm; maximal when forearm is in midpronated position"
+    }
+  },
+  {
+    "slug": "extensor-carpi-radialis-longus",
+    "name": "Extensor carpi radialis longus",
+    "accepted": ["extensor carpi radialis longus", "ecrl"],
+    "oiia": {
+      "origin": "Lateral supra-epicondylar ridge of humerus",
+      "insertion": "Dorsal aspect of base of 2nd metacarpal",
+      "innervation": "Radial nerve (C6, C7)",
+      "action": "Extends and abducts hand at wrist; active during fist clenching"
+    }
+  },
+  {
+    "slug": "extensor-carpi-radialis-brevis",
+    "name": "Extensor carpi radialis brevis",
+    "accepted": ["extensor carpi radialis brevis", "ecrb"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus (common extensor origin)",
+      "insertion": "Dorsal aspect of base of 3rd metacarpal",
+      "innervation": "Deep branch of radial nerve (C7, C8)",
+      "action": "Extends and abducts hand at wrist joint"
+    }
+  },
+  {
+    "slug": "extensor-digitorum",
+    "name": "Extensor digitorum",
+    "accepted": ["extensor digitorum"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus (common extensor origin)",
+      "insertion": "Extensor expansions of medial four digits",
+      "innervation": "Deep branch of radial nerve (C7, C8)",
+      "action": "Extends medial four digits primarily at MCP joints, secondarily at IP joints"
+    }
+  },
+  {
+    "slug": "extensor-digiti-minimi",
+    "name": "Extensor digiti minimi",
+    "accepted": ["extensor digiti minimi", "edm"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus (common extensor origin)",
+      "insertion": "Extensor expansion of 5th digit",
+      "innervation": "Deep branch of radial nerve (C7, C8)",
+      "action": "Extends 5th digit primarily at MCP joint, secondarily at IP joint"
+    }
+  },
+  {
+    "slug": "extensor-carpi-ulnaris",
+    "name": "Extensor carpi ulnaris",
+    "accepted": ["extensor carpi ulnaris", "ecu"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus; posterior border of ulna via shared aponeurosis",
+      "insertion": "Dorsal aspect of base of 5th metacarpal",
+      "innervation": "Deep branch of radial nerve (C7, C8)",
+      "action": "Extends and adducts hand at wrist; active during fist clenching"
+    }
+  },
+  {
+    "slug": "supinator",
+    "name": "Supinator",
+    "accepted": ["supinator"],
+    "oiia": {
+      "origin": "Lateral epicondyle of humerus; radial collateral and anular ligaments; supinator fossa; crest of ulna",
+      "insertion": "Lateral, posterior, and anterior surfaces of proximal third of radius",
+      "innervation": "Deep branch of radial nerve (C7, C8)",
+      "action": "Supinates forearm; rotates radius to turn palm anteriorly or superiorly"
+    }
+  },
+  {
+    "slug": "extensor-indicis",
+    "name": "Extensor indicis",
+    "accepted": ["extensor indicis"],
+    "oiia": {
+      "origin": "Posterior surface of distal third of ulna and interosseous membrane",
+      "insertion": "Extensor expansion of 2nd digit",
+      "innervation": "Posterior interosseous nerve (C7, C8), continuation of deep branch of radial nerve",
+      "action": "Extends 2nd digit (enabling independent extension); helps extend hand at wrist"
+    }
+  },
+  {
+    "slug": "abductor-pollicis-longus",
+    "name": "Abductor pollicis longus",
+    "accepted": ["abductor pollicis longus", "apl"],
+    "oiia": {
+      "origin": "Posterior surface of proximal halves of ulna, radius, and interosseous membrane",
+      "insertion": "Base of 1st metacarpal",
+      "innervation": "Posterior interosseous nerve (C7, C8)",
+      "action": "Abducts thumb and extends it at carpometacarpal joint"
+    }
+  },
+  {
+    "slug": "extensor-pollicis-longus",
+    "name": "Extensor pollicis longus",
+    "accepted": ["extensor pollicis longus", "epl"],
+    "oiia": {
+      "origin": "Posterior surface of middle third of ulna and interosseous membrane",
+      "insertion": "Dorsal aspect of base of distal phalanx of thumb",
+      "innervation": "Posterior interosseous nerve (C7, C8)",
+      "action": "Extends distal phalanx of thumb at IP joint; extends MCP and CMC joints"
+    }
+  },
+  {
+    "slug": "extensor-pollicis-brevis",
+    "name": "Extensor pollicis brevis",
+    "accepted": ["extensor pollicis brevis", "epb"],
+    "oiia": {
+      "origin": "Posterior surface of distal third of radius and interosseous membrane",
+      "insertion": "Dorsal aspect of base of proximal phalanx of thumb",
+      "innervation": "Posterior interosseous nerve (C7, C8)",
+      "action": "Extends proximal phalanx of thumb at MCP joint; extends CMC joint"
+    }
+  },
+  {
+    "slug": "abductor-digiti-minimi",
+    "name": "Abductor digiti minimi",
+    "accepted": ["abductor digiti minimi", "abductor of 5th digit"],
+    "oiia": {
+      "origin": "Pisiform",
+      "insertion": "Medial side of base of proximal phalanx of 5th digit",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Abducts 5th digit; assists in flexion of its proximal phalanx"
+    }
+  },
+  {
+    "slug": "flexor-digiti-minimi-brevis",
+    "name": "Flexor digiti minimi brevis",
+    "accepted": ["flexor digiti minimi brevis", "flexor of 5th digit"],
+    "oiia": {
+      "origin": "Hook of hamate and flexor retinaculum",
+      "insertion": "Medial side of base of proximal phalanx of 5th digit",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Flexes proximal phalanx of 5th digit"
+    }
+  },
+  {
+    "slug": "opponens-digiti",
+    "name": "Opponens digiti",
+    "accepted": ["opponens digiti", "opponens digiti minimi"],
+    "oiia": {
+      "origin": "Hook of hamate and flexor retinaculum",
+      "insertion": "Medial border of 5th metacarpal",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Draws 5th metacarpal anterior and rotates it, bringing 5th digit into opposition with thumb"
+    }
+  },
+  {
+    "slug": "opponens-pollicis",
+    "name": "Opponens pollicis",
+    "accepted": ["opponens pollicis"],
+    "oiia": {
+      "origin": "Flexor retinaculum and tubercles of scaphoid and trapezium",
+      "insertion": "Lateral side of 1st metacarpal",
+      "innervation": "Recurrent branch of median nerve (C8, T1)",
+      "action": "To oppose thumb, it draws 1st metacarpal medially to center of palm and rotates it medially"
+    }
+  },
+  {
+    "slug": "abductor-pollicis-brevis",
+    "name": "Abductor pollicis brevis",
+    "accepted": ["abductor pollicis brevis", "apb"],
+    "oiia": {
+      "origin": "Flexor retinaculum and tubercles of scaphoid and trapezium",
+      "insertion": "Lateral side of base of proximal phalanx of thumb",
+      "innervation": "Recurrent branch of median nerve (C8, T1)",
+      "action": "Abducts thumb; helps oppose it"
+    }
+  },
+  {
+    "slug": "flexor-pollicis-brevis",
+    "name": "Flexor pollicis brevis",
+    "accepted": ["flexor pollicis brevis", "fpb"],
+    "oiia": {
+      "origin": "Flexor retinaculum and tubercles of scaphoid and trapezium",
+      "insertion": "Lateral side of base of proximal phalanx of thumb",
+      "innervation": "Recurrent branch of median nerve (C8, T1)",
+      "action": "Flexes thumb"
+    }
+  },
+  {
+    "slug": "lumbricals",
+    "name": "Lumbricals (1st–4th)",
+    "accepted": ["lumbricals", "lumbrical"],
+    "oiia": {
+      "origin": "1st & 2nd: lateral two tendons of flexor digitorum profundus (unipennate); 3rd & 4th: medial three tendons of flexor digitorum profundus (bipennate)",
+      "insertion": "Lateral sides of extensor expansions of 2nd–5th digits",
+      "innervation": "1st & 2nd: Median nerve (C8, T1); 3rd & 4th: Deep branch of ulnar nerve (C8, T1)",
+      "action": "Flex metacarpophalangeal joints; extend interphalangeal joints of 2nd–5th digits"
+    }
+  },
+  {
+    "slug": "adductor-pollicis",
+    "name": "Adductor pollicis",
+    "accepted": ["adductor pollicis"],
+    "oiia": {
+      "origin": "Oblique head: Bases of 2nd and 3rd metacarpals, capitate, and adjacent carpals; Transverse head: Anterior surface of shaft of 3rd metacarpal",
+      "insertion": "Medial side of base of proximal phalanx of thumb",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Adducts thumb toward lateral border of palm"
+    }
+  },
+  {
+    "slug": "dorsal-interossei",
+    "name": "Dorsal interossei (1st–4th)",
+    "accepted": ["dorsal interossei", "dorsal interosseous"],
+    "oiia": {
+      "origin": "Adjacent sides of two metacarpals (as bipennate muscles)",
+      "insertion": "Bases of proximal phalanges; extensor expansions of 2nd–4th digits",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Abduct 2nd–4th digits from axial line; act with lumbricals in flexing metacarpophalangeal joints and extending interphalangeal joints"
+    }
+  },
+  {
+    "slug": "palmar-interossei",
+    "name": "Palmar interossei (1st–3rd)",
+    "accepted": ["palmar interossei", "palmar interosseous"],
+    "oiia": {
+      "origin": "Palmar surfaces of 2nd, 4th, and 5th metacarpals (as unipennate muscles)",
+      "insertion": "Bases of proximal phalanges; extensor expansions of 2nd, 4th, and 5th digits",
+      "innervation": "Deep branch of ulnar nerve (C8, T1)",
+      "action": "Adduct 2nd, 4th, and 5th digits toward axial line; assist lumbricals in flexing metacarpophalangeal joints and extending interphalangeal joints"
+    }
   }
 ]

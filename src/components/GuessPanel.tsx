@@ -93,7 +93,7 @@ export default function GuessPanel({
                          text-white placeholder-slate-400 outline-none transition-all duration-200
                          focus:border-emerald-500/50 focus:bg-slate-800/70 focus:ring-2 focus:ring-emerald-500/20
                          disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="e.g., Pectoralis major, Biceps, Quadriceps..."
+                placeholder="Type Name of Muscle Displayed"
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submit()}
