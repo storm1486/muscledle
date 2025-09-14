@@ -1,9 +1,16 @@
+// components/GuessPanel.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import muscles from "@/data/muscles.json";
 
-type Entry = {
+export type Entry = {
   slug: string;
   name: string;
   accepted: string[];
@@ -13,6 +20,10 @@ type Entry = {
     innervation: string;
     action: string;
   };
+};
+
+export type GuessPanelHandle = {
+  reveal: () => void; // parent can force reveal
 };
 
 function norm(s: string) {
@@ -33,15 +44,20 @@ function isMatch(input: string, entry: Entry) {
   return pool.has(n);
 }
 
-export default function GuessPanel({
-  currentSlug,
-  onCorrect,
-}: {
+type Props = {
   currentSlug: string | null;
-  onCorrect: (entry: Entry) => void;
-}) {
+  onCorrect?: (entry: Entry) => void;
+  onAttempt?: (result: "correct" | "wrong") => void; // <— NEW
+};
+
+const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
+  { currentSlug, onCorrect, onAttempt },
+  ref
+) {
   const [guess, setGuess] = useState("");
-  const [status, setStatus] = useState<"idle" | "correct" | "wrong">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "correct" | "wrong" | "revealed"
+  >("idle");
 
   const entry = useMemo<Entry | undefined>(
     () =>
@@ -60,11 +76,21 @@ export default function GuessPanel({
     if (!entry) return;
     if (isMatch(guess, entry)) {
       setStatus("correct");
-      onCorrect(entry);
+      onAttempt?.("correct");
+      onCorrect?.(entry);
     } else {
       setStatus("wrong");
+      onAttempt?.("wrong");
     }
   };
+
+  // Allow parent to force “reveal”
+  useImperativeHandle(ref, () => ({
+    reveal: () => {
+      if (!entry || status === "correct" || status === "revealed") return;
+      setStatus("revealed");
+    },
+  }));
 
   return (
     <div className="h-full w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
@@ -97,9 +123,9 @@ export default function GuessPanel({
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submit()}
-                disabled={!entry}
+                disabled={!entry || status === "correct"} // <— disable after correct
               />
-              {guess && (
+              {guess && status !== "correct" && (
                 <button
                   onClick={() => setGuess("")}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white
@@ -114,7 +140,7 @@ export default function GuessPanel({
           {/* Submit Button */}
           <button
             onClick={submit}
-            disabled={!entry || !guess.trim()}
+            disabled={!entry || !guess.trim() || status === "correct"}
             className="w-full px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 
                      text-white font-semibold rounded-2xl transition-all duration-200
                      hover:from-emerald-500 hover:to-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25
@@ -137,14 +163,31 @@ export default function GuessPanel({
               </div>
             )}
 
-            {status === "correct" && entry && (
+            {(status === "correct" || status === "revealed") && entry && (
               <div className="w-full space-y-4">
-                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                <div
+                  className={`p-4 rounded-xl ${
+                    status === "correct"
+                      ? "bg-emerald-500/10 border border-emerald-500/30"
+                      : "bg-slate-700/30 border border-slate-600/50"
+                  }`}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-emerald-400 text-xl">🎉</span>
-                    <span className="text-emerald-300 font-semibold text-lg">
-                      Correct! {entry.name}
-                    </span>
+                    {status === "correct" ? (
+                      <>
+                        <span className="text-emerald-400 text-xl">🎉</span>
+                        <span className="text-emerald-300 font-semibold text-lg">
+                          Correct! {entry.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-amber-400 text-xl">ℹ️</span>
+                        <span className="text-slate-200 font-semibold text-lg">
+                          Answer: {entry.name}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -197,20 +240,8 @@ export default function GuessPanel({
           </div>
         </div>
       </div>
-
-      {/* Footer Tip */}
-      <div className="p-6 border-t border-slate-700/50">
-        <div className="bg-slate-800/30 rounded-lg p-4">
-          <div className="flex items-start gap-2">
-            <span className="text-blue-400 text-sm">💡</span>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              <strong className="text-slate-300">Pro tip:</strong> Common
-              abbreviations and synonyms are accepted (e.g., "pec major",
-              "traps", "lats", "quads"). Don't worry about perfect spelling!
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
-}
+});
+
+export default GuessPanel;

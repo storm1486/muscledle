@@ -12,17 +12,24 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-export type MuscleViewerHandle = { next: () => void };
-type Props = { onChange?: (path: string, slug: string) => void };
+export type MuscleViewerHandle = {
+  next: () => void;
+  setBySlug: (slug: string) => void;
+};
 
-// turn "/models/pectoralis-major.glb" -> "pectoralis-major"
+type Props = {
+  onChange?: (path: string, slug: string) => void;
+  muscleSlug?: string | null; // if provided, show this slug
+};
+
+// "/models/pectoralis-major.glb" -> "pectoralis-major"
 function pathToSlug(path: string) {
   const base = path.split("/").pop() || "";
   return base.replace(/\.glb$/i, "");
 }
 
 const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
-  function MuscleViewer({ onChange }, ref) {
+  function MuscleViewer({ onChange, muscleSlug }, ref) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [list, setList] = useState<string[]>([]);
@@ -41,26 +48,46 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       onChange?.(pick, pathToSlug(pick));
     }
 
-    // expose next() to parent
+    function setBySlug(slug: string) {
+      if (!list.length) return;
+      const want = slug.toLowerCase();
+      const found = list.find((p) => pathToSlug(p).toLowerCase() === want);
+      if (found) {
+        setLastUrl(found);
+        setMuscleUrl(found);
+        onChange?.(found, pathToSlug(found));
+      }
+    }
+
     useImperativeHandle(ref, () => ({
       next: () => pickRandom(),
+      setBySlug,
     }));
 
-    // fetch manifest once and pick first muscle
+    // load manifest once
     useEffect(() => {
       fetch("/models/manifest.json")
         .then((r) => r.json())
         .then((files: string[]) => {
           const pool = (files || []).filter((p) => !/skeleton\.glb$/i.test(p));
           setList(pool);
+          // initial pick (respect muscleSlug if given)
           if (pool.length > 0) {
-            pickRandom(pool);
+            if (muscleSlug) setBySlug(muscleSlug);
+            else pickRandom(pool);
           }
         })
         .catch(console.error);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // --- Three.js rendering ---
+    // react to muscleSlug changes after manifest is loaded
+    useEffect(() => {
+      if (muscleSlug && list.length) setBySlug(muscleSlug);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [muscleSlug, list.length]);
+
+    // --- Three.js rendering (unchanged below) ---
     useEffect(() => {
       if (!muscleUrl) return;
 
