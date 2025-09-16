@@ -70,7 +70,11 @@ export default function MusclePage() {
   });
   const [dailyStats, setDailyStats] = useState<DailyPersist | null>(null);
 
-  const [study, setStudy] = useState<StudyProgress>(() => loadStudy());
+  const [study, setStudy] = useState<StudyProgress>({
+    order: [],
+    index: 0,
+    completed: false,
+  });
 
   // reveal lock (per muscle display)
   const [canReveal, setCanReveal] = useState(true);
@@ -81,7 +85,12 @@ export default function MusclePage() {
   }, [currentSlug]);
 
   // ---------- initialize study + daily ----------
-  useEffect(() => setStudy(loadStudy()), []);
+  useEffect(() => {
+    setStudy(loadStudy());
+  }, []);
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     // ensure daily state (for today's date)
@@ -241,13 +250,14 @@ export default function MusclePage() {
                 </span>
               </div>
             )}
-            {mode === "study" && (
+            {mode === "study" && mounted && (
               <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-3 py-2 text-slate-200 backdrop-blur-sm">
                 {study.completed
                   ? "Study: Completed ✅"
                   : `Study: ${study.index + 1} / ${study.order.length}`}
               </div>
             )}
+
             {mode === "daily" && dailyStats && (
               <div
                 className={`rounded-lg px-3 py-2 border backdrop-blur-sm ${
