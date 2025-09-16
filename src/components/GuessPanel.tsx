@@ -47,11 +47,12 @@ function isMatch(input: string, entry: Entry) {
 type Props = {
   currentSlug: string | null;
   onCorrect?: (entry: Entry) => void;
-  onAttempt?: (result: "correct" | "wrong") => void; // <— NEW
+  onAttempt?: (result: "correct" | "wrong") => void;
+  disabled?: boolean; // NEW
 };
 
 const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
-  { currentSlug, onCorrect, onAttempt },
+  { currentSlug, onCorrect, onAttempt, disabled = false },
   ref
 ) {
   const [guess, setGuess] = useState("");
@@ -74,7 +75,14 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
 
   const submit = () => {
     if (!entry) return;
-    if (isMatch(guess, entry)) {
+
+    // ⛔️ Don't process if already correct or revealed
+    if (status === "correct" || status === "revealed") return;
+
+    const trimmed = guess.trim();
+    if (!trimmed) return;
+
+    if (isMatch(trimmed, entry)) {
       setStatus("correct");
       onAttempt?.("correct");
       onCorrect?.(entry);
@@ -87,8 +95,8 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
   // Allow parent to force “reveal”
   useImperativeHandle(ref, () => ({
     reveal: () => {
-      if (!entry || status === "correct" || status === "revealed") return;
-      setStatus("revealed");
+      if (!entry) return;
+      setStatus((prev) => (prev === "correct" ? "correct" : "revealed"));
     },
   }));
 
@@ -104,9 +112,8 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
           Identify the highlighted muscle in the 3D model
         </p>
       </div>
-
       {/* Main Content */}
-      <div className="flex-1 p-8 flex flex-col justify-center max-w-lg mx-auto w-full">
+      <div className="flex-1 p-8 flex flex-col max-w-lg mx-auto w-full overflow-y-auto min-h-0 justify-start pb-24">
         <div className="space-y-6">
           {/* Input Section */}
           <div className="space-y-4">
@@ -116,15 +123,26 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
             <div className="relative">
               <input
                 className="w-full px-6 py-4 bg-slate-800/50 border border-slate-600/50 rounded-2xl 
-                         text-white placeholder-slate-400 outline-none transition-all duration-200
-                         focus:border-emerald-500/50 focus:bg-slate-800/70 focus:ring-2 focus:ring-emerald-500/20
-                         disabled:opacity-50 disabled:cursor-not-allowed"
+           text-white placeholder-slate-400 outline-none transition-all duration-200
+           focus:border-emerald-500/50 focus:bg-slate-800/70 focus:ring-2 focus:ring-emerald-500/20
+           disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Type Name of Muscle Displayed"
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && submit()}
-                disabled={!entry || status === "correct"} // <— disable after correct
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // prevent duplicate submits
+                    submit();
+                  }
+                }}
+                disabled={
+                  disabled ||
+                  !entry ||
+                  status === "correct" ||
+                  status === "revealed"
+                }
               />
+
               {guess && status !== "correct" && (
                 <button
                   onClick={() => setGuess("")}
@@ -140,7 +158,13 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
           {/* Submit Button */}
           <button
             onClick={submit}
-            disabled={!entry || !guess.trim() || status === "correct"}
+            disabled={
+              disabled ||
+              !entry ||
+              !guess.trim() ||
+              status === "correct" ||
+              status === "revealed"
+            }
             className="w-full px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 
                      text-white font-semibold rounded-2xl transition-all duration-200
                      hover:from-emerald-500 hover:to-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25
@@ -182,7 +206,6 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
                       </>
                     ) : (
                       <>
-                        <span className="text-amber-400 text-xl">ℹ️</span>
                         <span className="text-slate-200 font-semibold text-lg">
                           Answer: {entry.name}
                         </span>

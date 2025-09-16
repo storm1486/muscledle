@@ -28,6 +28,7 @@ type MuscleMeta = {
   };
 };
 
+// ---------- helpers ----------
 function norm(s: string) {
   return s
     .toLowerCase()
@@ -45,6 +46,47 @@ function isMatch(input: string, entry: MuscleMeta) {
   return pool.has(n);
 }
 
+// NY-local YYYY-MM-DD
+function nyDateKey() {
+  const now = new Date();
+  // quick-and-clean: use Intl in the client (we're in "use client")
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
+  return `${get("year")}-${get("month")}-${get("day")}`; // YYYY-MM-DD
+}
+
+type Stats = { score: number; attempts: number };
+
+type DailyPersist = {
+  date: string; // YYYY-MM-DD (NY)
+  slug: string; // daily slug chosen
+  score: number;
+  attempts: number;
+  completed: boolean; // lock flag
+};
+
+const DAILY_KEY = "muscledle.daily.progress";
+
+function loadDaily(): DailyPersist | null {
+  try {
+    const raw = localStorage.getItem(DAILY_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as DailyPersist;
+  } catch {
+    return null;
+  }
+}
+function saveDaily(d: DailyPersist) {
+  try {
+    localStorage.setItem(DAILY_KEY, JSON.stringify(d));
+  } catch {}
+}
+
 export default function MusclePage() {
   const viewerRef = useRef<MuscleViewerHandle>(null);
   const guessRef = useRef<GuessPanelHandle>(null);
@@ -52,19 +94,24 @@ export default function MusclePage() {
   const [mode, setMode] = useState<Mode>("daily");
   const [currentSlug, setCurrentSlug] = useState<string | null>(null);
 
-  const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
+  // separate stats
+  const [studyStats, setStudyStats] = useState<Stats>({
+    score: 0,
+    attempts: 0,
+  });
+  const [dailyStats, setDailyStats] = useState<DailyPersist | null>(null);
 
   const [study, setStudy] = useState<StudyProgress>(() => loadStudy());
 
-  // top-level state
+  // reveal lock (per muscle display)
   const [canReveal, setCanReveal] = useState(true);
 
-  // reset reveal availability when the muscle changes
+  // reset reveal on slug change
   useEffect(() => {
     setCanReveal(true);
   }, [currentSlug]);
 
+  // derive current entry
   const entry: MuscleMeta | undefined = useMemo(() => {
     if (!currentSlug) return undefined;
     const found = (muscles as MuscleMeta[]).find((m) => m.slug === currentSlug);
@@ -80,10 +127,35 @@ export default function MusclePage() {
     };
   }, [currentSlug]);
 
-  // when mode changes, lock the viewer to the correct slug
+  // ---------- initialize study + daily ----------
+  useEffect(() => setStudy(loadStudy()), []);
+
+  useEffect(() => {
+    // ensure daily state (for today's date)
+    const date = nyDateKey();
+    const todaysSlug = getDailyMuscleSlug("America/New_York");
+    const existing = loadDaily();
+
+    if (!existing || existing.date !== date || existing.slug !== todaysSlug) {
+      const fresh: DailyPersist = {
+        date,
+        slug: todaysSlug,
+        score: 0,
+        attempts: 0,
+        completed: false,
+      };
+      setDailyStats(fresh);
+      saveDaily(fresh);
+    } else {
+      setDailyStats(existing);
+    }
+  }, []);
+
+  // ---------- respond to mode changes ----------
   useEffect(() => {
     if (mode === "daily") {
-      const slug = getDailyMuscleSlug("America/New_York");
+      // lock viewer to today's daily slug
+      const slug = dailyStats?.slug ?? getDailyMuscleSlug("America/New_York");
       setCurrentSlug(slug);
       viewerRef.current?.setBySlug(slug);
     } else if (mode === "study") {
@@ -99,11 +171,10 @@ export default function MusclePage() {
         if (s2) viewerRef.current?.setBySlug(s2);
       }
     } else {
-      viewerRef.current?.next(); // free/random
+      // free = random
+      viewerRef.current?.next();
     }
-  }, [mode]);
-
-  useEffect(() => setStudy(loadStudy()), []);
+  }, [mode, dailyStats?.slug]);
 
   const nextMuscle = () => {
     if (mode === "daily") return; // no skipping
@@ -120,17 +191,46 @@ export default function MusclePage() {
     viewerRef.current?.next();
   };
 
+  // ---- reveal handler (counts as attempt, and locks Daily if used) ----
   const reveal = () => {
-    if (!canReveal) return; // block repeat reveal on same muscle
-    setAttempts((a) => a + 1); // count reveal as an attempt
-    guessRef.current?.reveal(); // show the answer in the panel
-    setCanReveal(false); // lock reveal for this muscle
+    if (!canReveal) return;
+    // Count attempt into current mode's stats
+    if (mode === "study") {
+      setStudyStats((prev) => ({ ...prev, attempts: prev.attempts + 1 }));
+    } else if (mode === "daily" && dailyStats) {
+      const updated: DailyPersist = {
+        ...dailyStats,
+        attempts: dailyStats.attempts + 1,
+        completed: true, // using reveal finishes daily for today
+      };
+      setDailyStats(updated);
+      saveDaily(updated);
+    }
+    guessRef.current?.reveal();
+    setCanReveal(false);
   };
 
   const handleViewerChange = (_path: string, slug: string) => {
-    // keep slug synced in Free mode (or when randomizing)
+    // keep slug in sync in Free mode
     setCurrentSlug(slug);
   };
+
+  // -------- display numbers depend on mode --------
+  const displayScore =
+    mode === "study"
+      ? studyStats.score
+      : mode === "daily"
+      ? dailyStats?.score ?? 0
+      : 0;
+  const displayAttempts =
+    mode === "study"
+      ? studyStats.attempts
+      : mode === "daily"
+      ? dailyStats?.attempts ?? 0
+      : 0;
+
+  // daily lock (can only be done once per day)
+  const isDailyLocked = mode === "daily" && !!dailyStats?.completed;
 
   return (
     <div className="flex flex-col w-full h-screen bg-slate-900">
@@ -171,13 +271,16 @@ export default function MusclePage() {
           <div className="flex items-center gap-4 text-sm">
             <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
               <span className="text-emerald-300 font-medium">
-                Score: {score}/{attempts}
+                Score: {displayScore}/{displayAttempts}
               </span>
             </div>
-            {attempts > 0 && (
+            {displayAttempts > 0 && (
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2">
                 <span className="text-blue-300 font-medium">
-                  {Math.round((score / Math.max(1, attempts)) * 100)}% Accuracy
+                  {Math.round(
+                    (displayScore / Math.max(1, displayAttempts)) * 100
+                  )}
+                  % Accuracy
                 </span>
               </div>
             )}
@@ -186,6 +289,19 @@ export default function MusclePage() {
                 {study.completed
                   ? "Study: Completed"
                   : `Study: ${study.index + 1} / ${study.order.length}`}
+              </div>
+            )}
+            {mode === "daily" && dailyStats && (
+              <div
+                className={`rounded-lg px-3 py-2 border ${
+                  dailyStats.completed
+                    ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
+                    : "bg-slate-700/40 border-slate-600/50 text-slate-200"
+                }`}
+              >
+                {dailyStats.completed
+                  ? "Daily: Done for today ✅"
+                  : "Daily: In progress"}
               </div>
             )}
           </div>
@@ -234,9 +350,14 @@ export default function MusclePage() {
 
               <button
                 onClick={reveal}
-                disabled={!currentSlug || !canReveal}
+                disabled={!currentSlug || !canReveal || isDailyLocked}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-700 
                  text-white rounded-xl disabled:opacity-50 ..."
+                title={
+                  isDailyLocked
+                    ? "Daily is complete for today"
+                    : "Reveal the answer"
+                }
               >
                 <span>🔍</span>
                 Reveal Answer
@@ -250,8 +371,7 @@ export default function MusclePage() {
                     const slug = p.order[p.index] ?? null;
                     setCurrentSlug(slug);
                     if (slug) viewerRef.current?.setBySlug(slug);
-                    setScore(0);
-                    setAttempts(0);
+                    setStudyStats({ score: 0, attempts: 0 });
                     setCanReveal(true);
                   }}
                   className="ml-auto px-4 py-2 rounded-xl border border-slate-600 text-slate-200 hover:bg-slate-800"
@@ -266,22 +386,35 @@ export default function MusclePage() {
           <GuessPanel
             ref={guessRef}
             currentSlug={currentSlug}
+            disabled={isDailyLocked} // ← block inputs when daily is done
             onCorrect={() => {
-              setScore((s) => s + 1);
-              setCanReveal(false); // prevent reveal after correct
-
               if (mode === "study") {
-                const updated = advanceStudy();
-                setStudy(updated);
-                const slug = currentStudySlug();
-                if (slug) {
-                  setCurrentSlug(slug);
-                  viewerRef.current?.setBySlug(slug);
-                }
+                setStudyStats((prev) => ({ ...prev, score: prev.score + 1 }));
+              } else if (mode === "daily" && dailyStats) {
+                const updated: DailyPersist = {
+                  ...dailyStats,
+                  score: dailyStats.score + 1,
+                  completed: true, // correct guess finishes daily
+                };
+                setDailyStats(updated);
+                saveDaily(updated);
               }
+              setCanReveal(false); // prevent reveal after correct
             }}
             onAttempt={() => {
-              setAttempts((a) => a + 1);
+              if (mode === "study") {
+                setStudyStats((prev) => ({
+                  ...prev,
+                  attempts: prev.attempts + 1,
+                }));
+              } else if (mode === "daily" && dailyStats) {
+                const updated: DailyPersist = {
+                  ...dailyStats,
+                  attempts: dailyStats.attempts + 1,
+                };
+                setDailyStats(updated);
+                saveDaily(updated);
+              }
             }}
           />
         </div>
