@@ -121,10 +121,12 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       scene.background = new THREE.Color(0x111111);
 
       const camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 1000);
+      // use your extended type:
       const controls: ZoomToCursorControls = new OrbitControls(
         camera,
         canvas
       ) as ZoomToCursorControls;
+      controls.zoomToCursor = true;
 
       controls.enableDamping = true;
       controls.enablePan = true;
@@ -135,7 +137,6 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       controls.autoRotateSpeed = 0.6;
       controls.enableZoom = true;
       // optional property on some OrbitControls builds:
-      (controls as any).zoomToCursor = true;
       controls.zoomSpeed = 1.0;
 
       let dragMode: "rotate" | "pan" | null = null;
