@@ -181,7 +181,7 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
                 <div className="flex items-center gap-2">
                   <span className="text-red-400 text-xl">❌</span>
                   <span className="text-red-300 font-medium">
-                    Not quite right — try again!
+                    Not quite right — make sure the spelling is correct! 
                   </span>
                 </div>
               </div>

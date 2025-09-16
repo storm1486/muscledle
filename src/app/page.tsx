@@ -1,10 +1,9 @@
 // app/muscle/page.tsx
 "use client";
 
-import { useRef, useState, useMemo, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import MuscleViewer, { MuscleViewerHandle } from "@/components/MuscleViewer";
 import GuessPanel, { GuessPanelHandle } from "@/components/GuessPanel";
-import muscles from "@/data/muscles.json";
 import { getDailyMuscleSlug } from "../../lib/daily";
 import {
   loadStudy,
@@ -15,36 +14,6 @@ import {
 } from "../../lib/study";
 
 type Mode = "daily" | "study" | "free";
-
-type MuscleMeta = {
-  slug: string;
-  name: string;
-  accepted: string[];
-  oiia?: {
-    origin: string;
-    insertion: string;
-    innervation: string;
-    action: string;
-  };
-};
-
-// ---------- helpers ----------
-function norm(s: string) {
-  return s
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-function isMatch(input: string, entry: MuscleMeta) {
-  const n = norm(input);
-  if (!n) return false;
-  const pool = new Set(
-    [entry.name, entry.slug, ...(entry.accepted || [])].map(norm)
-  );
-  return pool.has(n);
-}
 
 // NY-local YYYY-MM-DD
 function nyDateKey() {
@@ -91,7 +60,7 @@ export default function MusclePage() {
   const viewerRef = useRef<MuscleViewerHandle>(null);
   const guessRef = useRef<GuessPanelHandle>(null);
 
-  const [mode, setMode] = useState<Mode>("daily");
+  const [mode, setMode] = useState<Mode>("study");
   const [currentSlug, setCurrentSlug] = useState<string | null>(null);
 
   // separate stats
@@ -109,22 +78,6 @@ export default function MusclePage() {
   // reset reveal on slug change
   useEffect(() => {
     setCanReveal(true);
-  }, [currentSlug]);
-
-  // derive current entry
-  const entry: MuscleMeta | undefined = useMemo(() => {
-    if (!currentSlug) return undefined;
-    const found = (muscles as MuscleMeta[]).find((m) => m.slug === currentSlug);
-    if (found) return found;
-    const prettyName = currentSlug
-      .split("-")
-      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-      .join(" ");
-    return {
-      slug: currentSlug,
-      name: prettyName,
-      accepted: [currentSlug, prettyName],
-    };
   }, [currentSlug]);
 
   // ---------- initialize study + daily ----------
@@ -246,7 +199,7 @@ export default function MusclePage() {
 
           {/* Mode Switcher */}
           <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30">
-            {(["daily", "study", "free"] as Mode[]).map((m) => (
+            {(["study", "free"] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
