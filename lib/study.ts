@@ -2,62 +2,120 @@
 import muscles from "@/data/muscles.json";
 
 export type StudyProgress = {
-  order: string[];
-  index: number; // 0..order.length-1
+  order: string[]; // array of slugs to study
+  index: number; // current position in `order`
   completed: boolean;
 };
 
-const KEY = "muscledle/studyProgress/v1";
+const STORAGE_KEY = "muscledle.study.v1";
 
-function shuffle<T>(arr: T[]) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+type MuscleLike = { slug: string };
+
+function getAllSlugs(): string[] {
+  const list = muscles as unknown as MuscleLike[];
+  return list.map((m) => m.slug);
 }
 
-export function initStudy(): StudyProgress {
-  const order = shuffle((muscles as any[]).map((m) => m.slug as string));
-  const prog: StudyProgress = {
+/** Fisher–Yates shuffle with seeded PRNG (Mulberry32) */
+function mulberry32(seed: number): () => number {
+  let t = seed >>> 0;
+  return () => {
+    t += 0x6d2b79f5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  const rand = mulberry32(seed);
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    const tmp = out[i];
+    out[i] = out[j];
+    out[j] = tmp;
+  }
+  return out;
+}
+
+function nowSeed(): number {
+  // reasonably varied but deterministic per app load
+  const d = new Date();
+  return (
+    d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate()
+  );
+}
+
+function safeLoad(): StudyProgress | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StudyProgress;
+    // minimal validation
+    if (
+      !parsed ||
+      !Array.isArray(parsed.order) ||
+      typeof parsed.index !== "number" ||
+      typeof parsed.completed !== "boolean"
+    ) {
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function safeSave(s: StudyProgress): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    // ignore quota/availability issues
+  }
+}
+
+/** Create a fresh study plan (shuffled once) */
+export function resetStudy(): StudyProgress {
+  const slugs = getAllSlugs();
+  const seed = nowSeed();
+  const order = seededShuffle(slugs, seed);
+  const fresh: StudyProgress = {
     order,
     index: 0,
     completed: order.length === 0,
   };
-  if (typeof window !== "undefined")
-    localStorage.setItem(KEY, JSON.stringify(prog));
-  return prog;
+  safeSave(fresh);
+  return fresh;
 }
 
+/** Load study state (or initialize one if missing) */
 export function loadStudy(): StudyProgress {
-  if (typeof window === "undefined")
-    return { order: [], index: 0, completed: false };
-  const raw = localStorage.getItem(KEY);
-  if (raw) return JSON.parse(raw) as StudyProgress;
-  return initStudy();
+  const existing = safeLoad();
+  if (existing) return existing;
+  return resetStudy();
 }
 
-export function currentStudySlug(): string | null {
-  const p = loadStudy();
-  if (!p.order.length) return null;
-  return p.order[p.index] ?? null;
-}
-
+/** Advance to the next slug; marks completed at the end */
 export function advanceStudy(): StudyProgress {
-  const p = loadStudy();
-  if (p.completed) return p;
-  const nextIndex = p.index + 1;
-  const completed = nextIndex >= p.order.length;
+  const cur = loadStudy();
+  if (cur.completed) return cur;
+  const nextIndex = cur.index + 1;
   const updated: StudyProgress = {
-    ...p,
-    index: completed ? p.index : nextIndex,
-    completed,
+    ...cur,
+    index: Math.min(nextIndex, cur.order.length - 1),
+    completed: nextIndex >= cur.order.length,
   };
-  localStorage.setItem(KEY, JSON.stringify(updated));
+  safeSave(updated);
   return updated;
 }
 
-export function resetStudy(): StudyProgress {
-  return initStudy();
+/** Current slug in study flow, or null if none/finished */
+export function currentStudySlug(): string | null {
+  const cur = loadStudy();
+  if (cur.order.length === 0) return null;
+  if (cur.completed) return null;
+  return cur.order[cur.index] ?? null;
 }

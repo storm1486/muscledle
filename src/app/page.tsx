@@ -235,25 +235,29 @@ export default function MusclePage() {
   return (
     <div className="flex flex-col w-full h-screen bg-slate-900">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 border-b border-slate-700/50 p-6">
-        <div className="flex items-center justify-between gap-6">
+      <header className="w-full bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 border-b border-slate-700/50 p-6 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-6">
           <div>
-            <h1 className="text-2xl font-bold text-white">Muscle Up</h1>
+            <h1 className="text-3xl font-bold text-white bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+              Muscle Up
+            </h1>
             <p className="text-slate-400 text-sm">3D Anatomy Challenge</p>
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex items-center rounded-xl overflow-hidden border border-slate-700/50">
+          <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30">
             {(["daily", "study", "free"] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={[
-                  "px-4 py-2 text-sm",
-                  mode === m
-                    ? "bg-slate-700 text-white"
-                    : "text-slate-300 hover:bg-slate-800",
-                ].join(" ")}
+                className={`
+                  px-5 py-2.5 text-sm font-medium transition-all duration-200
+                  ${
+                    mode === m
+                      ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg"
+                      : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
+                  }
+                `}
                 title={
                   m === "daily"
                     ? "One shared muscle per day"
@@ -267,15 +271,15 @@ export default function MusclePage() {
             ))}
           </div>
 
-          {/* Score + Study progress */}
-          <div className="flex items-center gap-4 text-sm">
-            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+          {/* Stats Section */}
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
               <span className="text-emerald-300 font-medium">
                 Score: {displayScore}/{displayAttempts}
               </span>
             </div>
             {displayAttempts > 0 && (
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
                 <span className="text-blue-300 font-medium">
                   {Math.round(
                     (displayScore / Math.max(1, displayAttempts)) * 100
@@ -285,15 +289,15 @@ export default function MusclePage() {
               </div>
             )}
             {mode === "study" && (
-              <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-3 py-2 text-slate-200">
+              <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-3 py-2 text-slate-200 backdrop-blur-sm">
                 {study.completed
-                  ? "Study: Completed"
+                  ? "Study: Completed ✅"
                   : `Study: ${study.index + 1} / ${study.order.length}`}
               </div>
             )}
             {mode === "daily" && dailyStats && (
               <div
-                className={`rounded-lg px-3 py-2 border ${
+                className={`rounded-lg px-3 py-2 border backdrop-blur-sm ${
                   dailyStats.completed
                     ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
                     : "bg-slate-700/40 border-slate-600/50 text-slate-200"
@@ -311,7 +315,7 @@ export default function MusclePage() {
       {/* Main split */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left = 3D viewer */}
-        <div className="w-1/2 h-full relative">
+        <div className="w-1/2 h-full relative border-r border-slate-700/30">
           <MuscleViewer
             ref={viewerRef}
             onChange={handleViewerChange}
@@ -319,29 +323,36 @@ export default function MusclePage() {
               mode === "daily" || mode === "study" ? currentSlug : null
             }
           />
-          {/* Legend */}
-          <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-2 text-white text-xs">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-              <span>Target Muscle</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-              <span>Skeleton</span>
+          {/* Legend - Enhanced styling */}
+          <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md rounded-xl p-4 text-white text-sm shadow-2xl border border-slate-600/30">
+            <h3 className="text-xs uppercase tracking-wide text-slate-300 mb-3 font-semibold">
+              Legend
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <span className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></span>
+                <span>Target Muscle</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-3 h-3 bg-gray-500/70 rounded-full shadow-sm"></span>
+                <span>Skeleton</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Right = GuessPanel */}
         <div className="w-1/2 h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-          {/* Control Bar */}
-          <div className="p-6 border-b border-slate-700/50">
-            <div className="flex items-center gap-3">
+          {/* Control Bar - Enhanced styling */}
+          <div className="p-6 border-b border-slate-700/50 bg-slate-800/20">
+            <div className="flex flex-wrap items-center gap-3">
               {mode !== "daily" && (
                 <button
                   onClick={nextMuscle}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 
-                   text-white rounded-xl ..."
+                  className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 
+                           text-white rounded-xl font-medium transition-all duration-200
+                           hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25
+                           active:scale-95 transform"
                 >
                   <span>🔄</span>
                   {mode === "study" ? "Next in Study" : "Next Muscle"}
@@ -351,8 +362,11 @@ export default function MusclePage() {
               <button
                 onClick={reveal}
                 disabled={!currentSlug || !canReveal || isDailyLocked}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-700 
-                 text-white rounded-xl disabled:opacity-50 ..."
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 
+                         text-white rounded-xl font-medium transition-all duration-200
+                         hover:from-amber-500 hover:to-amber-600 hover:shadow-lg hover:shadow-amber-500/25
+                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none
+                         active:scale-95 transform"
                 title={
                   isDailyLocked
                     ? "Daily is complete for today"
@@ -374,7 +388,9 @@ export default function MusclePage() {
                     setStudyStats({ score: 0, attempts: 0 });
                     setCanReveal(true);
                   }}
-                  className="ml-auto px-4 py-2 rounded-xl border border-slate-600 text-slate-200 hover:bg-slate-800"
+                  className="ml-auto px-5 py-2.5 rounded-xl border border-slate-600/50 text-slate-200 
+                           hover:bg-slate-700/50 hover:border-slate-500 transition-all duration-200
+                           active:scale-95 transform font-medium"
                 >
                   Reset Study
                 </button>
