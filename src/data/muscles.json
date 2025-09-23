@@ -8,7 +8,8 @@
       "insertion": "Lateral third of clavicle; acromion and spine of scapula",
       "innervation": "Spinal accessory nerve (CN XI) and C3–C4 (sensory/proprioception)",
       "action": "Upper elevates; lower depresses; middle retracts; upper+lower rotate glenoid superiorly"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "latissimus-dorsi",
@@ -19,7 +20,8 @@
       "insertion": "Floor of intertubercular sulcus of humerus",
       "innervation": "Thoracodorsal nerve (C6–C8)",
       "action": "Extends, adducts, and medially rotates humerus; raises body during climbing"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "levator-scapulae",
@@ -30,7 +32,8 @@
       "insertion": "Medial border of scapula superior to root of spine",
       "innervation": "Dorsal scapular (C4–C5) and cervical nerves (C3–C4)",
       "action": "Elevates scapula; rotates glenoid cavity inferiorly"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "rhomboid-minor",
@@ -41,7 +44,8 @@
       "insertion": "Smooth triangular area at medial end of scapular spine",
       "innervation": "Dorsal scapular (C4–C5)",
       "action": "Retracts scapula; rotates glenoid inferiorly; fixes scapula to thoracic wall"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "rhomboid-major",
@@ -52,7 +56,8 @@
       "insertion": "Medial border of scapula from level of spine to inferior angle",
       "innervation": "Dorsal scapular (C4–C5)",
       "action": "Retracts scapula; rotates glenoid inferiorly; fixes scapula to thoracic wall"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "pectoralis-major",
@@ -63,7 +68,8 @@
       "insertion": "Lateral lip of intertubercular sulcus of humerus",
       "innervation": "Lateral & medial pectoral nerves (C5–T1)",
       "action": "Adducts & IR humerus; clavicular head flexes; sternocostal head extends from flexed"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "pectoralis-minor",
@@ -74,7 +80,8 @@
       "insertion": "Medial border & superior surface of coracoid process",
       "innervation": "Medial pectoral nerve (C8–T1)",
       "action": "Stabilizes scapula by drawing it anterior & inferior against thorax"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "subclavius",
@@ -85,7 +92,8 @@
       "insertion": "Inferior surface of middle third of clavicle",
       "innervation": "Nerve to subclavius (C5–C6)",
       "action": "Anchors & depresses clavicle"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "serratus-anterior",
@@ -96,7 +104,8 @@
       "insertion": "Anterior surface of medial border of scapula",
       "innervation": "Long thoracic nerve (C5–C7)",
       "action": "Protracts scapula; holds against thoracic wall; rotates scapula"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "deltoid",
@@ -107,7 +116,8 @@
       "insertion": "Deltoid tuberosity of humerus",
       "innervation": "Axillary nerve (C5, C6)",
       "action": "Clavicular (anterior) part: flexes and medially rotates arm; Acromial (middle) part: abducts arm; Spinal (posterior) part: extends and laterally rotates arm"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "supraspinatus",
@@ -118,7 +128,8 @@
       "insertion": "Superior facet of greater tubercle of humerus",
       "innervation": "Suprascapular nerve (C4, C5, C6)",
       "action": "Initiates and assists deltoid in abduction of arm; acts with other rotator cuff muscles"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "infraspinatus",
@@ -129,7 +140,8 @@
       "insertion": "Middle facet of greater tubercle of humerus",
       "innervation": "Suprascapular nerve (C5, C6)",
       "action": "Laterally rotates arm; acts with other rotator cuff muscles"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "teres-minor",
@@ -140,7 +152,8 @@
       "insertion": "Inferior facet of greater tubercle of humerus",
       "innervation": "Axillary nerve (C5, C6)",
       "action": "Laterally rotates arm; acts with other rotator cuff muscles"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "teres-major",
@@ -151,7 +164,8 @@
       "insertion": "Medial lip of intertubercular sulcus of humerus",
       "innervation": "Lower subscapular nerve (C5, C6)",
       "action": "Adducts and medially rotates arm"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "subscapularis",
@@ -162,7 +176,8 @@
       "insertion": "Lesser tubercle of humerus",
       "innervation": "Upper and lower subscapular nerves (C5, C6, C7)",
       "action": "Medially rotates arm; as part of rotator cuff, helps hold humeral head in glenoid cavity"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "biceps-brachii",
@@ -173,7 +188,8 @@
       "insertion": "Tuberosity of radius and fascia of forearm via bicipital aponeurosis",
       "innervation": "Musculocutaneous nerve (C5, C6, C7)",
       "action": "Supinates forearm and, when supine, flexes forearm; short head resists dislocation of shoulder"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "coracobrachialis",
@@ -184,7 +200,8 @@
       "insertion": "Middle third of medial surface of humerus",
       "innervation": "Musculocutaneous nerve (C5, C6, C7)",
       "action": "Helps flex and adduct arm; resists dislocation of shoulder"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "brachialis",
@@ -195,7 +212,8 @@
       "insertion": "Coronoid process and tuberosity of ulna",
       "innervation": "Musculocutaneous nerve (C5, C6) and radial nerve (C5, C7)",
       "action": "Flexes forearm in all positions"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "triceps-brachii",
@@ -206,7 +224,8 @@
       "insertion": "Proximal end of olecranon of ulna and fascia of forearm",
       "innervation": "Radial nerve (C6, C7, C8)",
       "action": "Chief extensor of forearm; long head resists dislocation of humerus; especially important during adduction"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "anconeus",
@@ -217,7 +236,8 @@
       "insertion": "Lateral surface of olecranon and superior part of posterior surface of ulna",
       "innervation": "Radial nerve (C7, C8, T1)",
       "action": "Assists triceps in extending forearm; stabilizes elbow joint; may abduct ulna during pronation"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "pronator-teres",
@@ -228,7 +248,8 @@
       "insertion": "Middle of convexity of lateral surface of radius",
       "innervation": "Median nerve (C6, C7)",
       "action": "Pronates and flexes forearm at elbow"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-carpi-radialis",
@@ -239,7 +260,8 @@
       "insertion": "Base of 2nd metacarpal",
       "innervation": "Median nerve (C6, C7)",
       "action": "Flexes and abducts hand at wrist"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "palmaris-longus",
@@ -250,7 +272,8 @@
       "insertion": "Distal half of flexor retinaculum and apex of palmar aponeurosis",
       "innervation": "Median nerve (C7, C8)",
       "action": "Flexes hand at wrist and tenses palmar aponeurosis"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-carpi-ulnaris",
@@ -261,7 +284,8 @@
       "insertion": "Pisiform, hook of hamate, 5th metacarpal",
       "innervation": "Ulnar nerve (C7, C8)",
       "action": "Flexes and adducts hand at wrist"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-digitorum-superficialis",
@@ -272,7 +296,8 @@
       "insertion": "Shafts of middle phalanges of medial four digits",
       "innervation": "Median nerve (C7, C8, T1)",
       "action": "Flexes middle phalanges at proximal interphalangeal joints of middle four digits; more strongly, flexes proximal phalanges at metacarpophalangeal joints"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-digitorum-profundus",
@@ -283,7 +308,8 @@
       "insertion": "Medial part: bases of distal phalanges of 4th and 5th digits; Lateral part: bases of distal phalanges of 2nd and 3rd digits",
       "innervation": "Medial part: ulnar nerve (C8, T1); Lateral part: anterior interosseous nerve from median nerve (C8, T1)",
       "action": "Flexes distal phalanges 4 and 5 at distal interphalangeal joints (medial part); Flexes distal phalanges 2 and 3 at distal interphalangeal joints (lateral part)"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-pollicis-longus",
@@ -294,7 +320,8 @@
       "insertion": "Base of distal phalanx of thumb",
       "innervation": "Anterior interosseous nerve, from median nerve (C8, T1)",
       "action": "Flexes phalanges of thumb"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "pronator-quadratus",
@@ -305,7 +332,8 @@
       "insertion": "Distal quarter of anterior surface of radius",
       "innervation": "Anterior interosseous nerve, from median nerve (C8, T1)",
       "action": "Pronates forearm; deep fibers bind radius and ulna together"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "brachioradialis",
@@ -316,7 +344,8 @@
       "insertion": "Lateral surface of distal end of radius proximal to styloid process",
       "innervation": "Radial nerve (C5, C6, C7)",
       "action": "Relatively weak flexion of forearm; maximal when forearm is in midpronated position"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-carpi-radialis-longus",
@@ -327,7 +356,8 @@
       "insertion": "Dorsal aspect of base of 2nd metacarpal",
       "innervation": "Radial nerve (C6, C7)",
       "action": "Extends and abducts hand at wrist; active during fist clenching"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-carpi-radialis-brevis",
@@ -338,7 +368,8 @@
       "insertion": "Dorsal aspect of base of 3rd metacarpal",
       "innervation": "Deep branch of radial nerve (C7, C8)",
       "action": "Extends and abducts hand at wrist joint"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-digitorum",
@@ -349,7 +380,8 @@
       "insertion": "Extensor expansions of medial four digits",
       "innervation": "Deep branch of radial nerve (C7, C8)",
       "action": "Extends medial four digits primarily at MCP joints, secondarily at IP joints"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-digiti-minimi",
@@ -360,7 +392,8 @@
       "insertion": "Extensor expansion of 5th digit",
       "innervation": "Deep branch of radial nerve (C7, C8)",
       "action": "Extends 5th digit primarily at MCP joint, secondarily at IP joint"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-carpi-ulnaris",
@@ -371,7 +404,8 @@
       "insertion": "Dorsal aspect of base of 5th metacarpal",
       "innervation": "Deep branch of radial nerve (C7, C8)",
       "action": "Extends and adducts hand at wrist; active during fist clenching"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "supinator",
@@ -382,7 +416,8 @@
       "insertion": "Lateral, posterior, and anterior surfaces of proximal third of radius",
       "innervation": "Deep branch of radial nerve (C7, C8)",
       "action": "Supinates forearm; rotates radius to turn palm anteriorly or superiorly"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-indicis",
@@ -393,7 +428,8 @@
       "insertion": "Extensor expansion of 2nd digit",
       "innervation": "Posterior interosseous nerve (C7, C8), continuation of deep branch of radial nerve",
       "action": "Extends 2nd digit (enabling independent extension); helps extend hand at wrist"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "abductor-pollicis-longus",
@@ -404,7 +440,8 @@
       "insertion": "Base of 1st metacarpal",
       "innervation": "Posterior interosseous nerve (C7, C8)",
       "action": "Abducts thumb and extends it at carpometacarpal joint"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-pollicis-longus",
@@ -415,7 +452,8 @@
       "insertion": "Dorsal aspect of base of distal phalanx of thumb",
       "innervation": "Posterior interosseous nerve (C7, C8)",
       "action": "Extends distal phalanx of thumb at IP joint; extends MCP and CMC joints"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "extensor-pollicis-brevis",
@@ -426,7 +464,8 @@
       "insertion": "Dorsal aspect of base of proximal phalanx of thumb",
       "innervation": "Posterior interosseous nerve (C7, C8)",
       "action": "Extends proximal phalanx of thumb at MCP joint; extends CMC joint"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "abductor-digiti-minimi",
@@ -437,7 +476,8 @@
       "insertion": "Medial side of base of proximal phalanx of 5th digit",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Abducts 5th digit; assists in flexion of its proximal phalanx"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-digiti-minimi-brevis",
@@ -448,7 +488,8 @@
       "insertion": "Medial side of base of proximal phalanx of 5th digit",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Flexes proximal phalanx of 5th digit"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "opponens-digiti",
@@ -459,7 +500,8 @@
       "insertion": "Medial border of 5th metacarpal",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Draws 5th metacarpal anterior and rotates it, bringing 5th digit into opposition with thumb"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "opponens-pollicis",
@@ -470,7 +512,8 @@
       "insertion": "Lateral side of 1st metacarpal",
       "innervation": "Recurrent branch of median nerve (C8, T1)",
       "action": "To oppose thumb, it draws 1st metacarpal medially to center of palm and rotates it medially"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "abductor-pollicis-brevis",
@@ -481,7 +524,8 @@
       "insertion": "Lateral side of base of proximal phalanx of thumb",
       "innervation": "Recurrent branch of median nerve (C8, T1)",
       "action": "Abducts thumb; helps oppose it"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "flexor-pollicis-brevis",
@@ -492,7 +536,8 @@
       "insertion": "Lateral side of base of proximal phalanx of thumb",
       "innervation": "Recurrent branch of median nerve (C8, T1)",
       "action": "Flexes thumb"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "lumbricals",
@@ -503,7 +548,8 @@
       "insertion": "Lateral sides of extensor expansions of 2nd–5th digits",
       "innervation": "1st & 2nd: Median nerve (C8, T1); 3rd & 4th: Deep branch of ulnar nerve (C8, T1)",
       "action": "Flex metacarpophalangeal joints; extend interphalangeal joints of 2nd–5th digits"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "adductor-pollicis",
@@ -514,7 +560,8 @@
       "insertion": "Medial side of base of proximal phalanx of thumb",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Adducts thumb toward lateral border of palm"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "dorsal-interossei",
@@ -525,7 +572,8 @@
       "insertion": "Bases of proximal phalanges; extensor expansions of 2nd–4th digits",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Abduct 2nd–4th digits from axial line; act with lumbricals in flexing metacarpophalangeal joints and extending interphalangeal joints"
-    }
+    },
+    "region": "upper"
   },
   {
     "slug": "palmar-interossei",
@@ -536,6 +584,103 @@
       "insertion": "Bases of proximal phalanges; extensor expansions of 2nd, 4th, and 5th digits",
       "innervation": "Deep branch of ulnar nerve (C8, T1)",
       "action": "Adduct 2nd, 4th, and 5th digits toward axial line; assist lumbricals in flexing metacarpophalangeal joints and extending interphalangeal joints"
+    },
+    "region": "upper"
+  },
+  {
+    "slug": "gluteus-maximus",
+    "name": "Gluteus maximus",
+    "accepted": ["gluteus maximus", "glute max"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Ilium posterior to posterior gluteal line; dorsal surface of sacrum and coccyx; sacrotuberous ligament",
+      "insertion": "Most fibers end in iliotibial tract, which inserts into lateral condyle of tibia; some fibers insert on gluteal tuberosity",
+      "innervation": "Inferior gluteal nerve (L5, S1, S2)",
+      "action": "Extends hip joint (especially from flexed position) and assists in lateral rotation; fixes hip joint and assists in rising from sitting position"
+    }
+  },
+  {
+    "slug": "gluteus-medius",
+    "name": "Gluteus medius",
+    "accepted": ["gluteus medius", "glute med"],
+    "region": "lower",
+    "oiia": {
+      "origin": "External surface of ilium between anterior and posterior gluteal lines",
+      "insertion": "Lateral surface of greater trochanter of femur",
+      "innervation": "Superior gluteal nerve (L5, S1)",
+      "action": "Abduct and medially rotate hip joint; keep pelvis level when ipsilateral limb is weight bearing and advance opposite side during swing phase"
+    }
+  },
+  {
+    "slug": "gluteus-minimus",
+    "name": "Gluteus minimus",
+    "accepted": ["gluteus minimus", "glute min"],
+    "region": "lower",
+    "oiia": {
+      "origin": "External surface of ilium between anterior and inferior gluteal lines",
+      "insertion": "Anterior surface of greater trochanter of femur",
+      "innervation": "Superior gluteal nerve (L5, S1)",
+      "action": "Abduct and medially rotate hip joint; keep pelvis level when ipsilateral limb is weight bearing and advance opposite side during swing phase"
+    }
+  },
+  {
+    "slug": "tensor-fasciae-latae",
+    "name": "Tensor fasciae latae",
+    "accepted": ["tensor fasciae latae", "tfl"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Anterior superior iliac spine; anterior part of iliac crest",
+      "insertion": "Iliotibial tract, which attaches to lateral condyle of tibia",
+      "innervation": "Superior gluteal nerve (L5, S1)",
+      "action": "Abduct and medially rotate hip joint; keep pelvis level when ipsilateral limb is weight bearing and advance opposite side during swing phase"
+    }
+  },
+  {
+    "slug": "piriformis",
+    "name": "Piriformis",
+    "accepted": ["piriformis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Anterior surface of sacrum; sacrotuberous ligament",
+      "insertion": "Superior border of greater trochanter of femur",
+      "innervation": "Branches of anterior rami of S1 and S2",
+      "action": "Laterally rotate extended hip joint and abduct hip joint when flexed; stabilize hip joint"
+    }
+  },
+  {
+    "slug": "obturator-internus",
+    "name": "Obturator internus",
+    "accepted": ["obturator internus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Pelvic surface of obturator membrane and surrounding bones",
+      "insertion": "Medial surface of greater trochanter (trochanteric fossa) of femur",
+      "innervation": "Nerve to obturator internus (L5, S1)",
+      "action": "Laterally rotate extended hip joint and abduct hip joint when flexed; stabilize hip joint"
+    }
+  },
+  {
+    "slug": "gemelli",
+    "name": "Superior and inferior gemelli",
+    "accepted": ["gemellus superior", "gemellus inferior", "gemelli"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Superior: ischial spine; Inferior: ischial tuberosity",
+      "insertion": "Medial surface of greater trochanter (trochanteric fossa) of femur",
+      "innervation": "Superior gemellus: same nerve supply as obturator internus; Inferior gemellus: same nerve supply as quadratus femoris",
+      "action": "Laterally rotate extended hip joint and abduct hip joint when flexed; stabilize hip joint"
+    }
+  },
+  {
+    "slug": "quadratus-femoris",
+    "name": "Quadratus femoris",
+    "accepted": ["quadratus femoris"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Lateral border of ischial tuberosity",
+      "insertion": "Quadrate tubercle on intertrochanteric crest of femur and area inferior to it",
+      "innervation": "Nerve to quadratus femoris (L5, S1)",
+      "action": "Laterally rotates hip joint; pulls femoral head into acetabulum to stabilize hip joint"
     }
   }
 ]

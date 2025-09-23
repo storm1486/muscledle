@@ -74,7 +74,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
     // load manifest once
     useEffect(() => {
       setError("");
-      fetch("/models/manifest.json")
+      fetch(`/models/manifest.json?bust=${Date.now()}`, { cache: "no-store" })
         .then((r) => r.json())
         .then((files: string[]) => {
           const pool = (files || []).filter((p) => !/skeleton\.glb$/i.test(p));
