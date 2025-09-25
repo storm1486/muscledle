@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "gluteus-maximus",
+    "name": "Gluteus maximus",
+    "accepted": ["gluteus maximus", "glute max"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Ilium posterior to posterior gluteal line; dorsal surface of sacrum and coccyx; sacrotuberous ligament",
+      "insertion": "Most fibers end in iliotibial tract, which inserts into lateral condyle of tibia; some fibers insert on gluteal tuberosity",
+      "innervation": "Inferior gluteal nerve (L5, S1, S2)",
+      "action": "Extends hip joint (especially from flexed position) and assists in lateral rotation; fixes hip joint and assists in rising from sitting position"
+    }
+  }
+]

@@ -10,7 +10,9 @@ import {
   resetStudy,
   advanceStudy,
   currentStudySlug,
+  setStudyRegion,
   type StudyProgress,
+  type Region,
 } from "../../lib/study";
 
 type Mode = "daily" | "study" | "free";
@@ -27,6 +29,35 @@ function nyDateKey() {
   }).formatToParts(now);
   const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
   return `${get("year")}-${get("month")}-${get("day")}`; // YYYY-MM-DD
+}
+
+// 1) Put this near the top (after constants), to define your fixed lists.
+type MissingItem = { muscle: string; reason: string };
+
+const MISSING_BY_REGION: Record<Region, MissingItem[]> = {
+  all: [], // auto-filled from upper+lower below in getMissingForRegion
+  upper: [
+    // EXAMPLES — change these to your real cases or leave empty
+    // { muscle: "Subclavius", reason: "model is corrupted in this build" },
+  ],
+  lower: [
+    { muscle: "Gluteus maximus", reason: "model is buggy" },
+    // Add more:
+    // { muscle: "Gluteus medius", reason: "not exported in current model set" },
+    // { muscle: "Piriformis", reason: "UV seam breaks cause render issues" },
+  ],
+};
+
+function getMissingForRegion(region: Region): MissingItem[] {
+  if (region === "all") {
+    // Union of upper+lower (deduped by muscle name)
+    const map = new Map<string, MissingItem>();
+    [...MISSING_BY_REGION.upper, ...MISSING_BY_REGION.lower].forEach((m) =>
+      map.set(m.muscle, m)
+    );
+    return Array.from(map.values());
+  }
+  return MISSING_BY_REGION[region] ?? [];
 }
 
 type Stats = { score: number; attempts: number };
@@ -70,14 +101,35 @@ export default function MusclePage() {
   });
   const [dailyStats, setDailyStats] = useState<DailyPersist | null>(null);
 
+  // Which region the Study deck should use
+  const [region, setRegion] = useState<Region>("all");
+  // 2) Add these pieces of state inside your component (near other useState hooks).
+  const [showMissing, setShowMissing] = useState(true);
+
+  // Re-open the notice whenever the region changes (so users see the right list)
+  useEffect(() => {
+    setShowMissing(true);
+  }, [region]);
+
   const [study, setStudy] = useState<StudyProgress>({
     order: [],
     index: 0,
     completed: false,
+    settings: { region }, // ← required by StudyProgress
   });
 
   // reveal lock (per muscle display)
   const [canReveal, setCanReveal] = useState(true);
+
+  useEffect(() => {
+    if (mode !== "study") return;
+    const p = setStudyRegion(region); // rebuild based on region
+    setStudy(p);
+    const slug = currentStudySlug(); // start at first
+    setCurrentSlug(slug);
+    if (slug) viewerRef.current?.setBySlug(slug);
+    setCanReveal(true);
+  }, [region, mode]);
 
   // reset reveal on slug change
   useEffect(() => {
@@ -89,8 +141,22 @@ export default function MusclePage() {
     setStudy(loadStudy());
   }, []);
 
+  // keep your mounted flag
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // NEW: after mount, load the real region from localStorage-backed study
+  useEffect(() => {
+    try {
+      const s = loadStudy();
+      if (s?.settings?.region) {
+        setRegion(s.settings.region);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+  const missingList = mounted ? getMissingForRegion(region) : [];
 
   useEffect(() => {
     // ensure daily state (for today's date)
@@ -121,12 +187,17 @@ export default function MusclePage() {
       setCurrentSlug(slug);
       viewerRef.current?.setBySlug(slug);
     } else if (mode === "study") {
+      // Ensure a study deck exists for the current region
+      const s = loadStudy();
+      if (!s || s.settings.region !== region) {
+        setStudyRegion(region);
+      }
       const slug = currentStudySlug();
       if (slug) {
         setCurrentSlug(slug);
         viewerRef.current?.setBySlug(slug);
       } else {
-        const p = resetStudy();
+        const p = resetStudy(region);
         setStudy(p);
         const s2 = p.order[p.index] ?? null;
         setCurrentSlug(s2);
@@ -205,6 +276,43 @@ export default function MusclePage() {
             </h1>
             <p className="text-slate-400 text-sm">3D Anatomy Challenge</p>
           </div>
+          {mounted && (
+            <div className="flex items-center gap-2">
+              <button
+                className={`px-3 py-1 rounded-full border text-sm ${
+                  region === "all"
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-gray-300"
+                }`}
+                onClick={() => setRegion("all")}
+                disabled={mode !== "study"}
+              >
+                All
+              </button>
+              <button
+                className={`px-3 py-1 rounded-full border text-sm ${
+                  region === "upper"
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-gray-300"
+                }`}
+                onClick={() => setRegion("upper")}
+                disabled={mode !== "study"}
+              >
+                Upper Extremity
+              </button>
+              <button
+                className={`px-3 py-1 rounded-full border text-sm ${
+                  region === "lower"
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-gray-300"
+                }`}
+                onClick={() => setRegion("lower")}
+                disabled={mode !== "study"}
+              >
+                Lower Extremity
+              </button>
+            </div>
+          )}
 
           {/* Mode Switcher */}
           <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30">
@@ -274,7 +382,6 @@ export default function MusclePage() {
           </div>
         </div>
       </header>
-
       {/* Main split */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left = 3D viewer */}
@@ -343,7 +450,7 @@ export default function MusclePage() {
               {mode === "study" && (
                 <button
                   onClick={() => {
-                    const p = resetStudy();
+                    const p = resetStudy(region);
                     setStudy(p);
                     const slug = p.order[p.index] ?? null;
                     setCurrentSlug(slug);
@@ -360,6 +467,55 @@ export default function MusclePage() {
               )}
             </div>
           </div>
+
+          {mode === "study" &&
+            mounted &&
+            showMissing &&
+            missingList.length > 0 && (
+              <div className="w-full border-b border-amber-600/30 bg-amber-900/20">
+                <div className="mx-auto max-w-6xl px-6 py-4 flex items-start gap-4">
+                  <div className="text-amber-300 text-xl leading-none">⚠️</div>
+                  <div className="flex-1">
+                    <h2 className="text-amber-200 font-semibold">
+                      Some{" "}
+                      {region === "all"
+                        ? "muscles"
+                        : `${region} extremity muscles`}{" "}
+                      aren’t available
+                    </h2>
+                    <p className="text-amber-200/90 text-sm mt-1">
+                      The following muscles aren’t shown in the 3D viewer due to
+                      known model issues:
+                    </p>
+
+                    <ul className="mt-3 grid sm:grid-cols-2 gap-2">
+                      {missingList.map((m) => (
+                        <li
+                          key={m.muscle}
+                          className="rounded-lg border border-amber-700/40 bg-amber-800/20 px-3 py-2 text-amber-100 text-sm"
+                        >
+                          <span className="font-medium">{m.muscle}</span>
+                          <span className="opacity-80"> — {m.reason}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <p className="text-amber-200/80 text-xs mt-3">
+                      We’ll include them once the models are fixed.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setShowMissing(false)}
+                    className="ml-2 rounded-md border border-amber-700/40 px-2 py-1 text-amber-200 text-xs hover:bg-amber-800/30"
+                    aria-label="Dismiss missing muscles notice"
+                    title="Dismiss"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            )}
 
           {/* GuessPanel drives UI + OIIA */}
           <GuessPanel

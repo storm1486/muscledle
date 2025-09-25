@@ -198,18 +198,25 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
 
       const tryFrame = () => {
         if (loaded < 2) return;
-        const box = new THREE.Box3().setFromObject(root);
-        const sphere = new THREE.Sphere();
-        box.getBoundingSphere(sphere);
 
-        panBox = box.clone().expandByScalar(0.1 * sphere.radius);
-        root.position.sub(sphere.center);
-        controls.target.set(0, 0, 0);
+        // 1) Measure the scene as loaded
+        const preBox = new THREE.Box3().setFromObject(root);
+        const sphere = new THREE.Sphere();
+        preBox.getBoundingSphere(sphere);
+
+        // 2) Center on origin, then lift a bit (e.g., 15% of radius)
+        const yLift = 0.12 * sphere.radius; // tweak this value to taste
+        root.position.sub(sphere.center); // center to (0,0,0)
+        root.position.y += yLift; // lift the whole model up
+
+        // 3) Controls look-at point should match the lifted height
+        controls.target.set(0, yLift, 0);
         controls.update();
 
+        // 4) Distance & camera placement
         const fov = THREE.MathUtils.degToRad(camera.fov);
         const dist = (sphere.radius / Math.sin(fov / 2)) * 1.15;
-        camera.position.set(0, 0, dist);
+        camera.position.set(0, yLift, dist); // keep camera at same y as the target
         camera.near = Math.max(dist / 100, 0.001);
         camera.far = dist * 100;
         camera.updateProjectionMatrix();
@@ -217,7 +224,11 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
         controls.minDistance = dist * 0.2;
         controls.maxDistance = dist * 0.9;
 
-        // hide loader once both skeleton + muscle are in
+        // 5) Recompute pan clamp AFTER repositioning so limits match what you see
+        const postBox = new THREE.Box3().setFromObject(root);
+        panBox = postBox.clone().expandByScalar(0.1 * sphere.radius);
+
+        // 6) hide loader
         setIsLoading(false);
       };
 

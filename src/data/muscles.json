@@ -588,18 +588,6 @@
     "region": "upper"
   },
   {
-    "slug": "gluteus-maximus",
-    "name": "Gluteus maximus",
-    "accepted": ["gluteus maximus", "glute max"],
-    "region": "lower",
-    "oiia": {
-      "origin": "Ilium posterior to posterior gluteal line; dorsal surface of sacrum and coccyx; sacrotuberous ligament",
-      "insertion": "Most fibers end in iliotibial tract, which inserts into lateral condyle of tibia; some fibers insert on gluteal tuberosity",
-      "innervation": "Inferior gluteal nerve (L5, S1, S2)",
-      "action": "Extends hip joint (especially from flexed position) and assists in lateral rotation; fixes hip joint and assists in rising from sitting position"
-    }
-  },
-  {
     "slug": "gluteus-medius",
     "name": "Gluteus medius",
     "accepted": ["gluteus medius", "glute med"],
@@ -681,6 +669,198 @@
       "insertion": "Quadrate tubercle on intertrochanteric crest of femur and area inferior to it",
       "innervation": "Nerve to quadratus femoris (L5, S1)",
       "action": "Laterally rotates hip joint; pulls femoral head into acetabulum to stabilize hip joint"
+    }
+  },
+  {
+    "slug": "pectineus",
+    "name": "Pectineus",
+    "accepted": ["pectineus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Superior ramus of pubis",
+      "insertion": "Pectineal line of femur, just inferior to lesser trochanter",
+      "innervation": "Femoral nerve (L2, L3); may receive a branch from obturator nerve",
+      "action": "Adducts and slightly flexes hip joint; assists with lateral rotation"
+    }
+  },
+  {
+    "slug": "psoas-major-and-minor",
+    "name": "Psoas major and minor",
+    "accepted": ["psoas major", "psoas minor"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Major: Sides of T12–L5 vertebrae and discs between them; transverse processes of all lumbar vertebrae. Minor: Sides of T12–L1 vertebrae and intervertebral discs",
+      "insertion": "Major: Lesser trochanter of femur. Minor: Pectineal line and iliopubic eminence via iliopectineal arch",
+      "innervation": "Major: Anterior rami of lumbar nerves (L1, L2, L3). Minor: Anterior rami of lumbar nerves (L1, L2)",
+      "action": "Acts conjointly in flexion and lateral rotation of hip joint and in stabilizing this joint when standing"
+    }
+  },
+  {
+    "slug": "iliacus",
+    "name": "Iliacus",
+    "accepted": ["iliacus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Iliac crest, iliac fossa, ala of sacrum, and anterior sacro-iliac ligaments",
+      "insertion": "Tendon of psoas major, lesser trochanter, and femur distal to it",
+      "innervation": "Femoral nerve (L2, L3)",
+      "action": "Acts conjointly in flexion and lateral rotation of hip joint and in stabilizing this joint when standing"
+    }
+  },
+  {
+    "slug": "sartorius",
+    "name": "Sartorius",
+    "accepted": ["sartorius"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Anterior superior iliac spine and superior part of notch inferior to it",
+      "insertion": "Superior part of medial surface of tibia (as part of pes anserinus)",
+      "innervation": "Femoral nerve (L2, L3)",
+      "action": "Flexes, abducts, and laterally rotates hip joint; flexes knee joint (medially rotates leg when knee joint is flexed)"
+    }
+  },
+  {
+    "slug": "rectus-femoris",
+    "name": "Rectus femoris",
+    "accepted": ["rectus femoris"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Anterior inferior iliac spine and ilium superior to acetabulum",
+      "insertion": "Via common tendinous (quadriceps tendon) and independent attachments to base of patella; indirectly via patellar ligament to tibial tuberosity",
+      "innervation": "Femoral nerve (L2, L3, L4)",
+      "action": "Extends knee joint; rectus femoris also steadies hip joint and helps iliopsoas flex hip joint"
+    }
+  },
+  {
+    "slug": "vastus-lateralis",
+    "name": "Vastus lateralis",
+    "accepted": ["vastus lateralis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Greater trochanter and lateral lip of linea aspera of femur",
+      "insertion": "Via common tendinous (quadriceps tendon) and independent attachments to base of patella; indirectly via patellar ligament to tibial tuberosity; also attaches to tibia and patella via aponeuroses (lateral patellar retinaculum)",
+      "innervation": "Femoral nerve (L2, L3, L4)",
+      "action": "Extends knee joint"
+    }
+  },
+  {
+    "slug": "vastus-medialis",
+    "name": "Vastus medialis",
+    "accepted": ["vastus medialis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Intertrochanteric line and medial lip of linea aspera of femur",
+      "insertion": "Via common tendinous (quadriceps tendon) and attachments to base of patella; indirectly via patellar ligament to tibial tuberosity; also attaches to tibia and patella via aponeuroses (medial patellar retinaculum)",
+      "innervation": "Femoral nerve (L2, L3, L4)",
+      "action": "Extends knee joint"
+    }
+  },
+  {
+    "slug": "vastus-intermedius",
+    "name": "Vastus intermedius",
+    "accepted": ["vastus intermedius"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Anterior and lateral surfaces of shaft of femur",
+      "insertion": "Via common tendinous (quadriceps tendon) and independent attachments to base of patella; indirectly via patellar ligament to tibial tuberosity",
+      "innervation": "Femoral nerve (L2, L3, L4)",
+      "action": "Extends knee joint"
+    }
+  },
+  {
+    "slug": "adductor-longus",
+    "name": "Adductor longus",
+    "accepted": ["adductor longus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Body of pubis inferior to pubic crest",
+      "insertion": "Middle third of linea aspera of femur",
+      "innervation": "Obturator nerve and branch of anterior division (L2, L3, L4)",
+      "action": "Adducts hip joint"
+    }
+  },
+  {
+    "slug": "adductor-brevis",
+    "name": "Adductor brevis",
+    "accepted": ["adductor brevis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Body and inferior ramus of pubis",
+      "insertion": "Pectineal line and proximal part of linea aspera of femur",
+      "innervation": "Obturator nerve (L2, L3, L4)",
+      "action": "Adducts hip joint and, to some extent, flexes it"
+    }
+  },
+  {
+    "slug": "adductor-magnus",
+    "name": "Adductor magnus",
+    "accepted": ["adductor magnus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Adductor part: inferior ramus of pubis and ramus of ischium; Hamstring part: ischial tuberosity",
+      "insertion": "Adductor part: gluteal tuberosity, linea aspera, and medial supracondylar line; Hamstring part: adductor tubercle of femur",
+      "innervation": "Adductor part: obturator nerve (L2, L3, L4) and branches of posterior division; Hamstring part: tibial part of sciatic nerve (L4)",
+      "action": "Adducts hip joint; Adductor part: flexes hip joint; Hamstring part: extends hip joint"
+    }
+  },
+  {
+    "slug": "gracilis",
+    "name": "Gracilis",
+    "accepted": ["gracilis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Body and inferior ramus of pubis",
+      "insertion": "Superior part of medial surface of tibia (as part of pes anserinus)",
+      "innervation": "Obturator nerve (L2, L3)",
+      "action": "Adducts hip joint; flexes knee joint, medially rotating it when flexed"
+    }
+  },
+  {
+    "slug": "obturator-externus",
+    "name": "Obturator externus",
+    "accepted": ["obturator externus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Margins of obturator foramen and obturator membrane",
+      "insertion": "Trochanteric fossa of femur",
+      "innervation": "Obturator nerve (L3, L4)",
+      "action": "Laterally rotates hip joint; stabilizes hip joint"
+    }
+  },
+  {
+    "slug": "semitendinosus",
+    "name": "Semitendinosus",
+    "accepted": ["semitendinosus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Ischial tuberosity",
+      "insertion": "Superior part of medial surface of tibia (as part of pes anserinus)",
+      "innervation": "Tibial division of sciatic nerve part of tibia (L5, S1, S2)",
+      "action": "Extends hip joint; flexes knee joint and medially rotates it when flexed. When hip and knee joints are flexed (as when sitting), helps extend trunk at hip joint (to rise)."
+    }
+  },
+  {
+    "slug": "semimembranosus",
+    "name": "Semimembranosus",
+    "accepted": ["semimembranosus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Ischial tuberosity",
+      "insertion": "Posterior part of medial condyle of tibia. Reflected attachment forms oblique popliteal ligament (to lateral femoral condyle).",
+      "innervation": "Tibial division of sciatic nerve part of tibia (L5, S1, S2)",
+      "action": "Extends hip joint; flexes knee joint and medially rotates it when flexed. When hip and knee joints are flexed (as when sitting), helps extend trunk at hip joint (to rise)."
+    }
+  },
+  {
+    "slug": "biceps-femoris",
+    "name": "Biceps femoris",
+    "accepted": ["biceps femoris"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Long head: ischial tuberosity; Short head: linea aspera and lateral supracondylar line of femur",
+      "insertion": "Lateral side of head of fibula. Tendon is split at this site by fibular collateral ligament of knee.",
+      "innervation": "Long head: tibial division of sciatic nerve (L5, S1, S2); Short head: common fibular division of sciatic nerve (L5, S1, S2)",
+      "action": "Flexes knee joint and laterally rotates it when flexed; long head extends hip joint (e.g., accelerating mass during first step of gait and when rising from sitting position)."
     }
   }
 ]
