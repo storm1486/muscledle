@@ -209,9 +209,18 @@ export default function MusclePage() {
     }
   }, [mode, dailyStats?.slug]);
 
+  // --- derived flags ---
+  const isAtLastStudyCard =
+    mode === "study" &&
+    (study.completed ||
+      study.order.length === 0 ||
+      study.index >= Math.max(0, study.order.length - 1));
+
   const nextMuscle = () => {
     if (mode === "daily") return; // no skipping
+
     if (mode === "study") {
+      if (isAtLastStudyCard) return; // already at last; do nothing
       const updated = advanceStudy();
       setStudy(updated);
       const slug = currentStudySlug();
@@ -221,6 +230,8 @@ export default function MusclePage() {
       }
       return;
     }
+
+    // free mode
     viewerRef.current?.next();
   };
 
@@ -419,10 +430,19 @@ export default function MusclePage() {
               {mode !== "daily" && (
                 <button
                   onClick={nextMuscle}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 
-                           text-white rounded-xl font-medium transition-all duration-200
-                           hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25
-                           active:scale-95 transform"
+                  disabled={mode === "study" && isAtLastStudyCard}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-200
+      ${
+        mode === "study"
+          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
+          : "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
+      }
+      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 transform`}
+                  title={
+                    mode === "study" && isAtLastStudyCard
+                      ? "End of study deck"
+                      : undefined
+                  }
                 >
                   <span>🔄</span>
                   {mode === "study" ? "Next in Study" : "Next Muscle"}
