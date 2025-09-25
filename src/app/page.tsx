@@ -63,11 +63,12 @@ function getMissingForRegion(region: Region): MissingItem[] {
 type Stats = { score: number; attempts: number };
 
 type DailyPersist = {
-  date: string; // YYYY-MM-DD (NY)
-  slug: string; // daily slug chosen
+  date: string;
+  slug: string;
   score: number;
   attempts: number;
-  completed: boolean; // lock flag
+  completed: boolean;
+  solvedOn?: number; // ← ADD
 };
 
 const DAILY_KEY = "muscledle.daily.progress";
@@ -117,6 +118,7 @@ export default function MusclePage() {
     completed: false,
     settings: { region }, // ← required by StudyProgress
   });
+  const [freeStats, setFreeStats] = useState<Stats>({ score: 0, attempts: 0 });
 
   // reveal lock (per muscle display)
   const [canReveal, setCanReveal] = useState(true);
@@ -171,7 +173,9 @@ export default function MusclePage() {
         score: 0,
         attempts: 0,
         completed: false,
+        solvedOn: undefined, // ← ADD
       };
+
       setDailyStats(fresh);
       saveDaily(fresh);
     } else {
@@ -238,18 +242,20 @@ export default function MusclePage() {
   // ---- reveal handler (counts as attempt, and locks Daily if used) ----
   const reveal = () => {
     if (!canReveal) return;
-    // Count attempt into current mode's stats
     if (mode === "study") {
       setStudyStats((prev) => ({ ...prev, attempts: prev.attempts + 1 }));
     } else if (mode === "daily" && dailyStats) {
       const updated: DailyPersist = {
         ...dailyStats,
+        completed: true,
         attempts: dailyStats.attempts + 1,
-        completed: true, // using reveal finishes daily for today
+        // ❌ remove this line:
+        // solvedOn: (dailyStats.attempts ?? 0) + 1,
       };
       setDailyStats(updated);
       saveDaily(updated);
     }
+
     guessRef.current?.reveal();
     setCanReveal(false);
   };
@@ -261,20 +267,34 @@ export default function MusclePage() {
 
   // -------- display numbers depend on mode --------
   const displayScore =
-    mode === "study"
-      ? studyStats.score
-      : mode === "daily"
-      ? dailyStats?.score ?? 0
-      : 0;
+    mode === "study" ? studyStats.score : mode === "free" ? freeStats.score : 0;
+
   const displayAttempts =
     mode === "study"
       ? studyStats.attempts
-      : mode === "daily"
-      ? dailyStats?.attempts ?? 0
-      : 0;
+      : mode === "free"
+      ? freeStats.attempts
+      : dailyStats?.attempts ?? 0;
 
   // daily lock (can only be done once per day)
-  const isDailyLocked = mode === "daily" && !!dailyStats?.completed;
+  // TIGHTEN daily locking by attempts (6) in your derived flags
+  const MAX_DAILY_GUESSES = 6;
+  const isDailyLocked =
+    mode === "daily" &&
+    (!!dailyStats?.completed ||
+      (dailyStats?.attempts ?? 0) >= MAX_DAILY_GUESSES);
+
+  useEffect(() => {
+    // Show the answer if Daily is finished (solved or max guesses) and we have a slug
+    if (
+      mode === "daily" &&
+      (isDailyLocked || dailyStats?.completed) &&
+      currentSlug
+    ) {
+      guessRef.current?.reveal();
+      setCanReveal(false);
+    }
+  }, [mode, isDailyLocked, dailyStats?.completed, currentSlug]);
 
   return (
     <div className="flex flex-col w-full h-screen bg-slate-900">
@@ -287,7 +307,7 @@ export default function MusclePage() {
             </h1>
             <p className="text-slate-400 text-sm">3D Anatomy Challenge</p>
           </div>
-          {mounted && (
+          {mounted && mode !== "daily" && (
             <div className="flex items-center gap-2">
               <button
                 className={`px-3 py-1 rounded-full border text-sm ${
@@ -327,18 +347,18 @@ export default function MusclePage() {
 
           {/* Mode Switcher */}
           <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30">
-            {(["study", "free"] as Mode[]).map((m) => (
+            {(["daily", "study", "free"] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
                 className={`
-                  px-5 py-2.5 text-sm font-medium transition-all duration-200
-                  ${
-                    mode === m
-                      ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg"
-                      : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
-                  }
-                `}
+        px-5 py-2.5 text-sm font-medium transition-all duration-200
+        ${
+          mode === m
+            ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg"
+            : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
+        }
+      `}
                 title={
                   m === "daily"
                     ? "One shared muscle per day"
@@ -351,15 +371,20 @@ export default function MusclePage() {
               </button>
             ))}
           </div>
-
+          {/* Stats Section */}
           {/* Stats Section */}
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
-              <span className="text-emerald-300 font-medium">
-                Score: {displayScore}/{displayAttempts}
-              </span>
-            </div>
-            {displayAttempts > 0 && (
+            {/* Study & Free: Score */}
+            {mode !== "daily" && (
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+                <span className="text-emerald-300 font-medium">
+                  Score: {displayScore}/{displayAttempts}
+                </span>
+              </div>
+            )}
+
+            {/* Study & Free: Accuracy */}
+            {mode !== "daily" && displayAttempts > 0 && (
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
                 <span className="text-blue-300 font-medium">
                   {Math.round(
@@ -369,6 +394,8 @@ export default function MusclePage() {
                 </span>
               </div>
             )}
+
+            {/* Study-only progress chip */}
             {mode === "study" && mounted && (
               <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-3 py-2 text-slate-200 backdrop-blur-sm">
                 {study.completed
@@ -377,18 +404,37 @@ export default function MusclePage() {
               </div>
             )}
 
-            {mode === "daily" && dailyStats && (
-              <div
-                className={`rounded-lg px-3 py-2 border backdrop-blur-sm ${
-                  dailyStats.completed
-                    ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
-                    : "bg-slate-700/40 border-slate-600/50 text-slate-200"
-                }`}
-              >
-                {dailyStats.completed
-                  ? "Daily: Done for today ✅"
-                  : "Daily: In progress"}
-              </div>
+            {/* Daily-only: Guesses + status */}
+            {mode === "daily" && (
+              <>
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+                  <span className="text-amber-200 font-medium">
+                    Guesses: {displayAttempts}/{MAX_DAILY_GUESSES}
+                  </span>
+                </div>
+
+                {typeof dailyStats?.solvedOn === "number" && (
+                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+                    <span className="text-emerald-300 font-medium">
+                      Solved on guess #{dailyStats.solvedOn}
+                    </span>
+                  </div>
+                )}
+
+                {dailyStats && (
+                  <div
+                    className={`rounded-lg px-3 py-2 border backdrop-blur-sm ${
+                      dailyStats.completed
+                        ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
+                        : "bg-slate-700/40 border-slate-600/50 text-slate-200"
+                    }`}
+                  >
+                    {dailyStats.completed
+                      ? "Daily: Done for today ✅"
+                      : "Daily: In progress"}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -542,19 +588,24 @@ export default function MusclePage() {
             ref={guessRef}
             currentSlug={currentSlug}
             disabled={isDailyLocked} // ← block inputs when daily is done
+            hintLevel={mode === "daily" ? dailyStats?.attempts ?? 0 : 0}
             onCorrect={() => {
               if (mode === "study") {
                 setStudyStats((prev) => ({ ...prev, score: prev.score + 1 }));
+              } else if (mode === "free") {
+                setFreeStats((prev) => ({ ...prev, score: prev.score + 1 }));
               } else if (mode === "daily" && dailyStats) {
                 const updated: DailyPersist = {
                   ...dailyStats,
-                  score: dailyStats.score + 1,
-                  completed: true, // correct guess finishes daily
+                  completed: true,
+                  // attempts counts wrong guesses so far; the correct guess is attempts + 1
+                  solvedOn: (dailyStats.attempts ?? 0) + 1,
                 };
                 setDailyStats(updated);
                 saveDaily(updated);
               }
-              setCanReveal(false); // prevent reveal after correct
+
+              setCanReveal(false);
             }}
             onAttempt={() => {
               if (mode === "study") {
@@ -562,13 +613,28 @@ export default function MusclePage() {
                   ...prev,
                   attempts: prev.attempts + 1,
                 }));
+              } else if (mode === "free") {
+                setFreeStats((prev) => ({
+                  ...prev,
+                  attempts: prev.attempts + 1,
+                }));
               } else if (mode === "daily" && dailyStats) {
+                const newAttempts = dailyStats.attempts + 1;
                 const updated: DailyPersist = {
                   ...dailyStats,
-                  attempts: dailyStats.attempts + 1,
+                  attempts: newAttempts,
+                  completed:
+                    newAttempts >= MAX_DAILY_GUESSES
+                      ? true
+                      : dailyStats.completed,
                 };
                 setDailyStats(updated);
                 saveDaily(updated);
+
+                if (newAttempts >= MAX_DAILY_GUESSES) {
+                  guessRef.current?.reveal();
+                  setCanReveal(false);
+                }
               }
             }}
           />

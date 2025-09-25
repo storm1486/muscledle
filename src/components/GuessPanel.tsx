@@ -43,16 +43,16 @@ function isMatch(input: string, entry: Entry) {
   );
   return pool.has(n);
 }
-
 type Props = {
   currentSlug: string | null;
   onCorrect?: (entry: Entry) => void;
   onAttempt?: (result: "correct" | "wrong") => void;
-  disabled?: boolean; // NEW
+  disabled?: boolean;
+  hintLevel?: number; // ← ADD THIS (0–6)
 };
 
 const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
-  { currentSlug, onCorrect, onAttempt, disabled = false },
+  { currentSlug, onCorrect, onAttempt, disabled = false, hintLevel = 0 }, // ← add hintLevel
   ref
 ) {
   const [guess, setGuess] = useState("");
@@ -67,6 +67,21 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
         : undefined,
     [currentSlug]
   );
+
+  // Progressive hints based on hintLevel (0..6)
+  const hints: Array<{ label: string; value?: string }> = useMemo(() => {
+    if (!entry) return [];
+    const out: Array<{ label: string; value?: string }> = [];
+    if (hintLevel >= 1 && entry.oiia?.action)
+      out.push({ label: "Action", value: entry.oiia.action });
+    if (hintLevel >= 2 && entry.oiia?.innervation)
+      out.push({ label: "Innervation", value: entry.oiia.innervation });
+    if (hintLevel >= 3 && entry.oiia?.origin)
+      out.push({ label: "Origin", value: entry.oiia.origin });
+    if (hintLevel >= 4 && entry.oiia?.insertion)
+      out.push({ label: "Insertion", value: entry.oiia.insertion });
+    return out;
+  }, [entry, hintLevel]);
 
   useEffect(() => {
     setGuess("");
@@ -174,6 +189,29 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
             Submit Answer
           </button>
 
+          {/* Progressive Hints (shown before final reveal) */}
+          {hints.length > 0 && status !== "revealed" && (
+            <div className="space-y-2 mb-4">
+              <h3 className="text-white font-semibold text-lg flex items-center gap-2">
+                <span className="text-blue-400">🧩</span>
+                Hints
+              </h3>
+              {hints.map((h) => (
+                <div
+                  key={h.label}
+                  className="rounded-lg border border-slate-600/50 bg-slate-800/40 p-3"
+                >
+                  <div className="text-xs uppercase tracking-wide text-slate-400">
+                    {h.label}
+                  </div>
+                  <div className="text-slate-200 text-sm mt-1 whitespace-pre-line">
+                    {h.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Status Messages */}
           <div className="min-h-[60px] flex items-start">
             {status === "wrong" && (
@@ -181,7 +219,7 @@ const GuessPanel = forwardRef<GuessPanelHandle, Props>(function GuessPanel(
                 <div className="flex items-center gap-2">
                   <span className="text-red-400 text-xl">❌</span>
                   <span className="text-red-300 font-medium">
-                    Not quite right — make sure the spelling is correct! 
+                    Not quite right — make sure the spelling is correct!
                   </span>
                 </div>
               </div>
