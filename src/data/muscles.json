@@ -862,5 +862,161 @@
       "innervation": "Long head: tibial division of sciatic nerve (L5, S1, S2); Short head: common fibular division of sciatic nerve (L5, S1, S2)",
       "action": "Flexes knee joint and laterally rotates it when flexed; long head extends hip joint (e.g., accelerating mass during first step of gait and when rising from sitting position)."
     }
+  },
+  {
+    "slug": "tibialis-anterior",
+    "name": "Tibialis anterior",
+    "accepted": ["tibialis anterior"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Lateral condyle and superior half of lateral surface of tibia and interosseous membrane",
+      "insertion": "Medial and inferior surfaces of medial cuneiform and base of 1st metatarsal",
+      "innervation": "Deep fibular nerve (L4, L5)",
+      "action": "Dorsiflexes ankle joint and inverts subtalar joint"
+    }
+  },
+  {
+    "slug": "extensor-digitorum-longus",
+    "name": "Extensor digitorum longus",
+    "accepted": ["extensor digitorum longus", "edl"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Lateral condyle of tibia and superior three quarters of medial surface of fibula and interosseous membrane",
+      "insertion": "Middle and distal phalanges of lateral four digits",
+      "innervation": "Deep fibular nerve (L5, S1)",
+      "action": "Extends lateral four digits and dorsiflexes ankle joint"
+    }
+  },
+  {
+    "slug": "extensor-hallucis-longus",
+    "name": "Extensor hallucis longus",
+    "accepted": ["extensor hallucis longus", "ehl"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Middle part of anterior surface of fibula and interosseous membrane",
+      "insertion": "Dorsal aspect of base of distal phalanx of great toe (hallux)",
+      "innervation": "Deep fibular nerve (L5, S1)",
+      "action": "Extends great toe and dorsiflexes ankle joint"
+    }
+  },
+  {
+    "slug": "fibularis-tertius",
+    "name": "Fibularis tertius",
+    "accepted": ["fibularis tertius", "peroneus tertius"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Inferior third of anterior surface of fibula and interosseous membrane",
+      "insertion": "Dorsum of base of 5th metatarsal",
+      "innervation": "Deep fibular nerve (L5, S1)",
+      "action": "Dorsiflexes ankle joint and aids in eversion of subtalar joint"
+    }
+  },
+  {
+    "slug": "fibularis-longus",
+    "name": "Fibularis longus",
+    "accepted": ["fibularis longus", "peroneus longus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Head and superior two thirds of lateral surface of fibula",
+      "insertion": "Base of 1st metatarsal and medial cuneiform",
+      "innervation": "Superficial fibular nerve (L5, S1, S2)",
+      "action": "Everts subtalar joint and weakly plantarflexes ankle joint"
+    }
+  },
+  {
+    "slug": "fibularis-brevis",
+    "name": "Fibularis brevis",
+    "accepted": ["fibularis brevis", "peroneus brevis"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Inferior two thirds of lateral surface of fibula",
+      "insertion": "Dorsal surface of tuberosity on lateral side of base of 5th metatarsal",
+      "innervation": "Superficial fibular nerve (L5, S1, S2)",
+      "action": "Everts subtalar joint and weakly plantarflexes ankle joint"
+    }
+  },
+  {
+    "slug": "gastrocnemius",
+    "name": "Gastrocnemius",
+    "accepted": ["gastrocnemius"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Lateral head: lateral aspect of lateral condyle of femur; Medial head: popliteal surface of femur superior to medial condyle",
+      "insertion": "Posterior surface of calcaneus via calcaneal tendon",
+      "innervation": "Tibial nerve (S1, S2)",
+      "action": "Plantarflexes ankle joint when knee joint is extended; raises heel during walking; flexes knee joint"
+    }
+  },
+  {
+    "slug": "soleus",
+    "name": "Soleus",
+    "accepted": ["soleus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Posterior aspect of head and superior quarter of posterior surface of fibula; soleal line and middle third of medial border of tibia; tendinous arch extending between the bony attachments",
+      "insertion": "Posterior surface of calcaneus via calcaneal tendon",
+      "innervation": "Tibial nerve (S1, S2)",
+      "action": "Plantarflexes ankle joint independent of position of knee; stabilizes ankle joint"
+    }
+  },
+  {
+    "slug": "plantaris",
+    "name": "Plantaris",
+    "accepted": ["plantaris"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Inferior end of lateral supracondylar line of femur; oblique popliteal ligament",
+      "insertion": "Posterior surface of calcaneus via calcaneal tendon",
+      "innervation": "Tibial nerve (S1, S2)",
+      "action": "Weakly assists gastrocnemius in plantarflexing ankle joint"
+    }
+  },
+  {
+    "slug": "popliteus",
+    "name": "Popliteus",
+    "accepted": ["popliteus"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Lateral surface of lateral condyle of femur and lateral meniscus",
+      "insertion": "Posterior surface of tibia superior to soleal line",
+      "innervation": "Tibial nerve (L4, L5, S1)",
+      "action": "Weakly flexes knee joint and unlocks it by rotating femur 5° on fixed tibia; medially rotates tibia of unplanted limb"
+    }
+  },
+  {
+    "slug": "flexor-hallucis-longus",
+    "name": "Flexor hallucis longus",
+    "accepted": ["flexor hallucis longus", "fhl"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Inferior two thirds of posterior surface of fibula; inferior part of interosseous membrane",
+      "insertion": "Base of distal phalanx of great toe (hallux)",
+      "innervation": "Tibial nerve (S2, S3)",
+      "action": "Flexes great toe at all joints; weakly plantarflexes ankle joint; supports medial longitudinal arch of foot"
+    }
+  },
+  {
+    "slug": "flexor-digitorum-longus",
+    "name": "Flexor digitorum longus",
+    "accepted": ["flexor digitorum longus", "fdl"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Medial part of posterior surface of tibia inferior to soleal line; by a broad tendon to fibula",
+      "insertion": "Bases of distal phalanges of lateral four digits",
+      "innervation": "Tibial nerve (S2, S3)",
+      "action": "Flexes lateral four digits; plantarflexes ankle joint; supports longitudinal arches of foot"
+    }
+  },
+  {
+    "slug": "tibialis-posterior",
+    "name": "Tibialis posterior",
+    "accepted": ["tibialis posterior", "tp"],
+    "region": "lower",
+    "oiia": {
+      "origin": "Interosseous membrane; posterior surface of tibia inferior to soleal line; posterior surface of fibula",
+      "insertion": "Tuberosity of navicular, cuneiform, cuboid, and sustentaculum tali of calcaneus; bases of 2nd, 3rd, and 4th metatarsals",
+      "innervation": "Tibial nerve (L4, L5)",
+      "action": "Plantarflexes ankle joint; inverts foot; maintains medial longitudinal arch"
+    }
   }
 ]
