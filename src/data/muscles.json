@@ -648,7 +648,7 @@
     }
   },
   {
-    "slug": "gemelli",
+    "slug": "superior-and-inferior-gemelli",
     "name": "Superior and inferior gemelli",
     "accepted": ["gemellus superior", "gemellus inferior", "gemelli"],
     "region": "lower",
