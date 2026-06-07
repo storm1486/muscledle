@@ -10,7 +10,7 @@
     "build": "npm run build:models && next build"
   },
   "dependencies": {
-    "next": "15.5.2",
+    "next": "^16.2.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "three": "^0.180.0"

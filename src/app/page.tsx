@@ -145,22 +145,19 @@ export default function MusclePage() {
 
   // keep your mounted flag
   const [mounted, setMounted] = useState(false);
-  // ---------- initialize study + regional settings on mount ----------
-  useEffect(() => {
-    setMounted(true);
+  useEffect(() => setMounted(true), []);
 
+  // NEW: after mount, load the real region from localStorage-backed study
+  useEffect(() => {
     try {
       const s = loadStudy();
-      setStudy(s);
       if (s?.settings?.region) {
         setRegion(s.settings.region);
       }
     } catch {
       // ignore
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 👈 Keep this completely empty so it truly runs ONLY once on startup
-
+  }, []);
   const missingList = mounted ? getMissingForRegion(region) : [];
 
   useEffect(() => {
