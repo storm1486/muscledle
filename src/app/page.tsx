@@ -157,6 +157,7 @@ export default function MusclePage() {
     } catch {
       // ignore
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const missingList = mounted ? getMissingForRegion(region) : [];
 

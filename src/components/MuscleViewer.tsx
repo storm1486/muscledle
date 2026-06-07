@@ -86,7 +86,6 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
           }
         })
         .catch((e) => {
-          // eslint-disable-next-line no-console
           console.error(e);
           setError("Failed to load model list.");
         });
