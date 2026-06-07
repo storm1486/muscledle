@@ -53,7 +53,7 @@ function getMissingForRegion(region: Region): MissingItem[] {
     // Union of upper+lower (deduped by muscle name)
     const map = new Map<string, MissingItem>();
     [...MISSING_BY_REGION.upper, ...MISSING_BY_REGION.lower].forEach((m) =>
-      map.set(m.muscle, m)
+      map.set(m.muscle, m),
     );
     return Array.from(map.values());
   }
@@ -273,8 +273,8 @@ export default function MusclePage() {
     mode === "study"
       ? studyStats.attempts
       : mode === "free"
-      ? freeStats.attempts
-      : dailyStats?.attempts ?? 0;
+        ? freeStats.attempts
+        : (dailyStats?.attempts ?? 0);
 
   // daily lock (can only be done once per day)
   // TIGHTEN daily locking by attempts (6) in your derived flags
@@ -297,23 +297,26 @@ export default function MusclePage() {
   }, [mode, isDailyLocked, dailyStats?.completed, currentSlug]);
 
   return (
-    <div className="flex flex-col w-full h-screen bg-slate-900">
+    <div className="flex flex-col w-full min-h-screen md:h-screen bg-slate-900 overflow-x-hidden">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 border-b border-slate-700/50 p-6 shadow-xl">
-        <div className="flex flex-wrap items-center justify-between gap-6">
+      <header className="w-full bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 border-b border-slate-700/50 p-4 md:p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-4 md:gap-6">
           <div>
-            <h1 className="text-3xl font-bold text-white bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-3xl font-bold text-white bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
               Muscle Up
             </h1>
-            <p className="text-slate-400 text-sm">3D Anatomy Challenge</p>
+            <p className="text-slate-400 text-xs md:text-sm">
+              3D Anatomy Challenge
+            </p>
           </div>
+
           {mounted && mode !== "daily" && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
               <button
-                className={`px-3 py-1 rounded-full border text-sm ${
+                className={`px-2.5 py-1 rounded-full border text-xs md:text-sm transition-colors ${
                   region === "all"
                     ? "bg-blue-600 text-white border-blue-600"
-                    : "border-gray-300"
+                    : "border-slate-600 text-slate-300"
                 }`}
                 onClick={() => setRegion("all")}
                 disabled={mode !== "study"}
@@ -321,10 +324,10 @@ export default function MusclePage() {
                 All
               </button>
               <button
-                className={`px-3 py-1 rounded-full border text-sm ${
+                className={`px-2.5 py-1 rounded-full border text-xs md:text-sm transition-colors ${
                   region === "upper"
                     ? "bg-blue-600 text-white border-blue-600"
-                    : "border-gray-300"
+                    : "border-slate-600 text-slate-300"
                 }`}
                 onClick={() => setRegion("upper")}
                 disabled={mode !== "study"}
@@ -332,10 +335,10 @@ export default function MusclePage() {
                 Upper Extremity
               </button>
               <button
-                className={`px-3 py-1 rounded-full border text-sm ${
+                className={`px-2.5 py-1 rounded-full border text-xs md:text-sm transition-colors ${
                   region === "lower"
                     ? "bg-blue-600 text-white border-blue-600"
-                    : "border-gray-300"
+                    : "border-slate-600 text-slate-300"
                 }`}
                 onClick={() => setRegion("lower")}
                 disabled={mode !== "study"}
@@ -346,37 +349,37 @@ export default function MusclePage() {
           )}
 
           {/* Mode Switcher */}
-          <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30">
+          <div className="flex items-center rounded-xl overflow-hidden border border-slate-600/50 shadow-lg bg-slate-800/30 w-full sm:w-auto justify-center sm:justify-start">
             {(["daily", "study", "free"] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
                 className={`
-        px-5 py-2.5 text-sm font-medium transition-all duration-200
-        ${
-          mode === m
-            ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg"
-            : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
-        }
-      `}
+                  flex-1 sm:flex-none px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-medium transition-all duration-200
+                  ${
+                    mode === m
+                      ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg"
+                      : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
+                  }
+                `}
                 title={
                   m === "daily"
                     ? "One shared muscle per day"
                     : m === "study"
-                    ? "Go through every muscle once"
-                    : "Random practice"
+                      ? "Go through every muscle once"
+                      : "Random practice"
                 }
               >
                 {m === "daily" ? "Daily" : m === "study" ? "Study" : "Free"}
               </button>
             ))}
           </div>
+
           {/* Stats Section */}
-          {/* Stats Section */}
-          <div className="flex flex-wrap items-center gap-3 text-sm">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm w-full lg:w-auto justify-start sm:justify-end">
             {/* Study & Free: Score */}
             {mode !== "daily" && (
-              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-2.5 py-1.5 backdrop-blur-sm">
                 <span className="text-emerald-300 font-medium">
                   Score: {displayScore}/{displayAttempts}
                 </span>
@@ -385,10 +388,10 @@ export default function MusclePage() {
 
             {/* Study & Free: Accuracy */}
             {mode !== "daily" && displayAttempts > 0 && (
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-2.5 py-1.5 backdrop-blur-sm">
                 <span className="text-blue-300 font-medium">
                   {Math.round(
-                    (displayScore / Math.max(1, displayAttempts)) * 100
+                    (displayScore / Math.max(1, displayAttempts)) * 100,
                   )}
                   % Accuracy
                 </span>
@@ -397,7 +400,7 @@ export default function MusclePage() {
 
             {/* Study-only progress chip */}
             {mode === "study" && mounted && (
-              <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-3 py-2 text-slate-200 backdrop-blur-sm">
+              <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg px-2.5 py-1.5 text-slate-200 backdrop-blur-sm">
                 {study.completed
                   ? "Study: Completed ✅"
                   : `Study: ${study.index + 1} / ${study.order.length}`}
@@ -407,14 +410,14 @@ export default function MusclePage() {
             {/* Daily-only: Guesses + status */}
             {mode === "daily" && (
               <>
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-2.5 py-1.5 backdrop-blur-sm">
                   <span className="text-amber-200 font-medium">
                     Guesses: {displayAttempts}/{MAX_DAILY_GUESSES}
                   </span>
                 </div>
 
                 {typeof dailyStats?.solvedOn === "number" && (
-                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
+                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-2.5 py-1.5 backdrop-blur-sm">
                     <span className="text-emerald-300 font-medium">
                       Solved on guess #{dailyStats.solvedOn}
                     </span>
@@ -423,14 +426,14 @@ export default function MusclePage() {
 
                 {dailyStats && (
                   <div
-                    className={`rounded-lg px-3 py-2 border backdrop-blur-sm ${
+                    className={`rounded-lg px-2.5 py-1.5 border backdrop-blur-sm ${
                       dailyStats.completed
                         ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
                         : "bg-slate-700/40 border-slate-600/50 text-slate-200"
                     }`}
                   >
                     {dailyStats.completed
-                      ? "Daily: Done for today ✅"
+                      ? "Daily: Done ✅"
                       : "Daily: In progress"}
                   </div>
                 )}
@@ -439,10 +442,11 @@ export default function MusclePage() {
           </div>
         </div>
       </header>
-      {/* Main split */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left = 3D viewer */}
-        <div className="w-1/2 h-full relative border-r border-slate-700/30">
+
+      {/* Main split responsive layout */}
+      <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
+        {/* Top on Mobile / Left on Desktop = 3D viewer */}
+        <div className="w-full md:w-1/2 h-[45vh] md:h-full relative border-b md:border-b-0 md:border-r border-slate-700/30 sticky top-0 md:relative z-10 bg-slate-900 shadow-xl md:shadow-none">
           <MuscleViewer
             ref={viewerRef}
             onChange={handleViewerChange}
@@ -450,40 +454,36 @@ export default function MusclePage() {
               mode === "daily" || mode === "study" ? currentSlug : null
             }
           />
-          {/* Legend - Enhanced styling */}
-          <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md rounded-xl p-4 text-white text-sm shadow-2xl border border-slate-600/30">
-            <h3 className="text-xs uppercase tracking-wide text-slate-300 mb-3 font-semibold">
+          {/* Legend */}
+          <div className="absolute top-3 right-3 md:top-6 md:right-6 bg-black/85 backdrop-blur-md rounded-xl p-3 md:p-4 text-white text-xs md:text-sm shadow-2xl border border-slate-600/30">
+            <h3 className="text-[10px] md:text-xs uppercase tracking-wide text-slate-300 mb-1.5 md:mb-3 font-semibold">
               Legend
             </h3>
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <span className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></span>
+            <div className="space-y-1.5 md:space-y-2">
+              <div className="flex items-center gap-2 md:gap-3">
+                <span className="w-2.5 h-2.5 md:w-3 md:h-3 bg-red-500 rounded-full shadow-sm"></span>
                 <span>Target Muscle</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="w-3 h-3 bg-gray-500/70 rounded-full shadow-sm"></span>
+              <div className="flex items-center gap-2 md:gap-3">
+                <span className="w-2.5 h-2.5 md:w-3 md:h-3 bg-gray-500/70 rounded-full shadow-sm"></span>
                 <span>Skeleton</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right = GuessPanel */}
-        <div className="w-1/2 h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-          {/* Control Bar - Enhanced styling */}
-          <div className="p-6 border-b border-slate-700/50 bg-slate-800/20">
-            <div className="flex flex-wrap items-center gap-3">
+        {/* Bottom on Mobile / Right on Desktop = GuessPanel */}
+        <div className="w-full md:w-1/2 min-h-[55vh] md:h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col relative z-20">
+          {/* Control Bar */}
+          <div className="p-4 md:p-6 border-b border-slate-700/50 bg-slate-800/20">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3">
               {mode !== "daily" && (
                 <button
                   onClick={nextMuscle}
                   disabled={mode === "study" && isAtLastStudyCard}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-200
-      ${
-        mode === "study"
-          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
-          : "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
-      }
-      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 transform`}
+                  className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-medium transition-all duration-200
+                             bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/25
+                             disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 transform"
                   title={
                     mode === "study" && isAtLastStudyCard
                       ? "End of study deck"
@@ -491,18 +491,20 @@ export default function MusclePage() {
                   }
                 >
                   <span>🔄</span>
-                  {mode === "study" ? "Next in Study" : "Next Muscle"}
+                  <span>
+                    {mode === "study" ? "Next in Study" : "Next Muscle"}
+                  </span>
                 </button>
               )}
 
               <button
                 onClick={reveal}
                 disabled={!currentSlug || !canReveal || isDailyLocked}
-                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 
-                         text-white rounded-xl font-medium transition-all duration-200
-                         hover:from-amber-500 hover:to-amber-600 hover:shadow-lg hover:shadow-amber-500/25
-                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none
-                         active:scale-95 transform"
+                className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 
+                           text-white rounded-xl text-xs md:text-sm font-medium transition-all duration-200
+                           hover:from-amber-500 hover:to-amber-600 hover:shadow-lg hover:shadow-amber-500/25
+                           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none
+                           active:scale-95 transform"
                 title={
                   isDailyLocked
                     ? "Daily is complete for today"
@@ -510,7 +512,7 @@ export default function MusclePage() {
                 }
               >
                 <span>🔍</span>
-                Reveal Answer
+                <span>Reveal Answer</span>
               </button>
 
               {mode === "study" && (
@@ -524,9 +526,9 @@ export default function MusclePage() {
                     setStudyStats({ score: 0, attempts: 0 });
                     setCanReveal(true);
                   }}
-                  className="ml-auto px-5 py-2.5 rounded-xl border border-slate-600/50 text-slate-200 
-                           hover:bg-slate-700/50 hover:border-slate-500 transition-all duration-200
-                           active:scale-95 transform font-medium"
+                  className="ml-auto px-3 md:px-5 py-2 md:py-2.5 rounded-xl border border-slate-600/50 text-slate-200 
+                             hover:bg-slate-700/50 hover:border-slate-500 transition-all duration-200
+                             active:scale-95 transform font-medium text-xs md:text-sm"
                 >
                   Reset Study
                 </button>
@@ -534,48 +536,46 @@ export default function MusclePage() {
             </div>
           </div>
 
+          {/* Missing Muscles Alert */}
           {mode === "study" &&
             mounted &&
             showMissing &&
             missingList.length > 0 && (
               <div className="w-full border-b border-amber-600/30 bg-amber-900/20">
-                <div className="mx-auto max-w-6xl px-6 py-4 flex items-start gap-4">
-                  <div className="text-amber-300 text-xl leading-none">⚠️</div>
-                  <div className="flex-1">
-                    <h2 className="text-amber-200 font-semibold">
+                <div className="px-4 md:px-6 py-3 md:py-4 flex items-start gap-3 md:gap-4">
+                  <div className="text-amber-300 text-lg md:text-xl leading-none">
+                    ⚠️
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-amber-200 text-xs md:text-sm font-semibold">
                       Some{" "}
                       {region === "all"
                         ? "muscles"
                         : `${region} extremity muscles`}{" "}
                       aren’t available
                     </h2>
-                    <p className="text-amber-200/90 text-sm mt-1">
+                    <p className="text-amber-200/90 text-[11px] md:text-xs mt-0.5">
                       The following muscles aren’t shown in the 3D viewer due to
                       known model issues:
                     </p>
 
-                    <ul className="mt-3 grid sm:grid-cols-2 gap-2">
+                    <ul className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                       {missingList.map((m) => (
                         <li
                           key={m.muscle}
-                          className="rounded-lg border border-amber-700/40 bg-amber-800/20 px-3 py-2 text-amber-100 text-sm"
+                          className="rounded-lg border border-amber-700/40 bg-amber-800/20 px-2 py-1 text-amber-100 text-[11px] md:text-xs"
                         >
                           <span className="font-medium">{m.muscle}</span>
                           <span className="opacity-80"> — {m.reason}</span>
                         </li>
                       ))}
                     </ul>
-
-                    <p className="text-amber-200/80 text-xs mt-3">
-                      We’ll include them once the models are fixed.
-                    </p>
                   </div>
 
                   <button
                     onClick={() => setShowMissing(false)}
-                    className="ml-2 rounded-md border border-amber-700/40 px-2 py-1 text-amber-200 text-xs hover:bg-amber-800/30"
+                    className="ml-2 rounded-md border border-amber-700/40 px-1.5 py-0.5 text-amber-200 text-[10px] md:text-xs hover:bg-amber-800/30 transition-colors shrink-0"
                     aria-label="Dismiss missing muscles notice"
-                    title="Dismiss"
                   >
                     Dismiss
                   </button>
@@ -583,61 +583,61 @@ export default function MusclePage() {
               </div>
             )}
 
-          {/* GuessPanel drives UI + OIIA */}
-          <GuessPanel
-            ref={guessRef}
-            currentSlug={currentSlug}
-            disabled={isDailyLocked} // ← block inputs when daily is done
-            hintLevel={mode === "daily" ? dailyStats?.attempts ?? 0 : 0}
-            onCorrect={() => {
-              if (mode === "study") {
-                setStudyStats((prev) => ({ ...prev, score: prev.score + 1 }));
-              } else if (mode === "free") {
-                setFreeStats((prev) => ({ ...prev, score: prev.score + 1 }));
-              } else if (mode === "daily" && dailyStats) {
-                const updated: DailyPersist = {
-                  ...dailyStats,
-                  completed: true,
-                  // attempts counts wrong guesses so far; the correct guess is attempts + 1
-                  solvedOn: (dailyStats.attempts ?? 0) + 1,
-                };
-                setDailyStats(updated);
-                saveDaily(updated);
-              }
-
-              setCanReveal(false);
-            }}
-            onAttempt={() => {
-              if (mode === "study") {
-                setStudyStats((prev) => ({
-                  ...prev,
-                  attempts: prev.attempts + 1,
-                }));
-              } else if (mode === "free") {
-                setFreeStats((prev) => ({
-                  ...prev,
-                  attempts: prev.attempts + 1,
-                }));
-              } else if (mode === "daily" && dailyStats) {
-                const newAttempts = dailyStats.attempts + 1;
-                const updated: DailyPersist = {
-                  ...dailyStats,
-                  attempts: newAttempts,
-                  completed:
-                    newAttempts >= MAX_DAILY_GUESSES
-                      ? true
-                      : dailyStats.completed,
-                };
-                setDailyStats(updated);
-                saveDaily(updated);
-
-                if (newAttempts >= MAX_DAILY_GUESSES) {
-                  guessRef.current?.reveal();
-                  setCanReveal(false);
+          {/* GuessPanel container panel */}
+          <div className="flex-1 p-2 md:p-0">
+            <GuessPanel
+              ref={guessRef}
+              currentSlug={currentSlug}
+              disabled={isDailyLocked}
+              hintLevel={mode === "daily" ? (dailyStats?.attempts ?? 0) : 0}
+              onCorrect={() => {
+                if (mode === "study") {
+                  setStudyStats((prev) => ({ ...prev, score: prev.score + 1 }));
+                } else if (mode === "free") {
+                  setFreeStats((prev) => ({ ...prev, score: prev.score + 1 }));
+                } else if (mode === "daily" && dailyStats) {
+                  const updated: DailyPersist = {
+                    ...dailyStats,
+                    completed: true,
+                    solvedOn: (dailyStats.attempts ?? 0) + 1,
+                  };
+                  setDailyStats(updated);
+                  saveDaily(updated);
                 }
-              }
-            }}
-          />
+                setCanReveal(false);
+              }}
+              onAttempt={() => {
+                if (mode === "study") {
+                  setStudyStats((prev) => ({
+                    ...prev,
+                    attempts: prev.attempts + 1,
+                  }));
+                } else if (mode === "free") {
+                  setFreeStats((prev) => ({
+                    ...prev,
+                    attempts: prev.attempts + 1,
+                  }));
+                } else if (mode === "daily" && dailyStats) {
+                  const newAttempts = dailyStats.attempts + 1;
+                  const updated: DailyPersist = {
+                    ...dailyStats,
+                    attempts: newAttempts,
+                    completed:
+                      newAttempts >= MAX_DAILY_GUESSES
+                        ? true
+                        : dailyStats.completed,
+                  };
+                  setDailyStats(updated);
+                  saveDaily(updated);
+
+                  if (newAttempts >= MAX_DAILY_GUESSES) {
+                    guessRef.current?.reveal();
+                    setCanReveal(false);
+                  }
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

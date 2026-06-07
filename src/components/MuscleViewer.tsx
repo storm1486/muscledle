@@ -124,7 +124,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       // use your extended type:
       const controls: ZoomToCursorControls = new OrbitControls(
         camera,
-        canvas
+        canvas,
       ) as ZoomToCursorControls;
       controls.zoomToCursor = true;
 
@@ -136,7 +136,6 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.6;
       controls.enableZoom = true;
-      // optional property on some OrbitControls builds:
       controls.zoomSpeed = 1.0;
 
       let dragMode: "rotate" | "pan" | null = null;
@@ -150,7 +149,6 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
       };
       setLeftToRotate();
 
-      // Use named handlers so add/remove get the same reference
       const onPointerDown = (e: PointerEvent) => {
         if (e.button !== 0) return;
         dragMode = null;
@@ -204,29 +202,41 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
         const sphere = new THREE.Sphere();
         preBox.getBoundingSphere(sphere);
 
-        // 2) Center on origin, then lift a bit (e.g., 15% of radius)
-        const yLift = 0.12 * sphere.radius; // tweak this value to taste
-        root.position.sub(sphere.center); // center to (0,0,0)
-        root.position.y += yLift; // lift the whole model up
+        // 2) Center on origin, then lift a bit (e.g., 12% of radius)
+        const yLift = 0.12 * sphere.radius;
+        root.position.sub(sphere.center);
+        root.position.y += yLift;
 
         // 3) Controls look-at point should match the lifted height
         controls.target.set(0, yLift, 0);
         controls.update();
 
-        // 4) Distance & camera placement
-        const fov = THREE.MathUtils.degToRad(camera.fov);
-        const dist = (sphere.radius / Math.sin(fov / 2)) * 1.15;
-        camera.position.set(0, yLift, dist); // keep camera at same y as the target
+        // 4) Dynamic Distance & Camera placement for mobile frames
+        const aspect = el.clientWidth / el.clientHeight;
+        const fovRad = THREE.MathUtils.degToRad(camera.fov);
+
+        // Base distance logic
+        let dist = sphere.radius / Math.sin(fovRad / 2);
+
+        // If screen is narrow (portrait mode), pull camera back based on aspect ratio
+        if (aspect < 1) {
+          dist = dist / aspect;
+        }
+
+        // Apply comfortable padding multiplier (1.20 adds a 20% margin around edges)
+        dist *= 1.2;
+
+        camera.position.set(0, yLift, dist);
         camera.near = Math.max(dist / 100, 0.001);
         camera.far = dist * 100;
         camera.updateProjectionMatrix();
 
         controls.minDistance = dist * 0.2;
-        controls.maxDistance = dist * 0.9;
+        controls.maxDistance = dist * 1.5; // Upgraded so mobile users can pull back further
 
         // 5) Recompute pan clamp AFTER repositioning so limits match what you see
         const postBox = new THREE.Box3().setFromObject(root);
-        panBox = postBox.clone().expandByScalar(0.1 * sphere.radius);
+        panBox = postBox.clone().expandByScalar(0.2 * sphere.radius);
 
         // 6) hide loader
         setIsLoading(false);
@@ -268,7 +278,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
           tryFrame();
         },
         undefined,
-        onLoadError("skeleton")
+        onLoadError("skeleton"),
       );
 
       loader.load(
@@ -285,7 +295,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
           tryFrame();
         },
         undefined,
-        onLoadError("muscle model")
+        onLoadError("muscle model"),
       );
 
       const onResize = () => {
@@ -294,6 +304,8 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
         renderer.setSize(W, H);
         camera.aspect = W / H;
         camera.updateProjectionMatrix();
+        // Recalculate camera frame on window resizing or flip events
+        tryFrame();
       };
       window.addEventListener("resize", onResize);
 
@@ -304,14 +316,18 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
             THREE.MathUtils.clamp(
               controls.target.x,
               panBox.min.x,
-              panBox.max.x
+              panBox.max.x,
             ),
             THREE.MathUtils.clamp(
               controls.target.y,
               panBox.min.y,
-              panBox.max.y
+              panBox.max.y,
             ),
-            THREE.MathUtils.clamp(controls.target.z, panBox.min.z, panBox.max.z)
+            THREE.MathUtils.clamp(
+              controls.target.z,
+              panBox.min.z,
+              panBox.max.z,
+            ),
           );
         }
         const distNow = camera.position.clone().sub(controls.target).length();
@@ -337,7 +353,6 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
         }
         renderer.dispose();
 
-        // Dispose materials & geometries without `any`
         scene.traverse((obj: THREE.Object3D) => {
           if ((obj as THREE.Mesh).isMesh) {
             const mesh = obj as THREE.Mesh;
@@ -354,7 +369,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
     }, [muscleUrl]);
 
     return (
-      <div ref={containerRef} className="relative w-full h-[100vh]">
+      <div ref={containerRef} className="relative w-full h-full">
         {/* Loading overlay */}
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 backdrop-blur-[1px]">
@@ -390,7 +405,7 @@ const MuscleViewer = forwardRef<MuscleViewerHandle, Props>(
         )}
       </div>
     );
-  }
+  },
 );
 
 export default MuscleViewer;
