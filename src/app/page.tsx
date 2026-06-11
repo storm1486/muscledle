@@ -472,10 +472,10 @@ export default function MusclePage() {
           </div>
         </div>
 
-        {/* Bottom on Mobile / Right on Desktop = GuessPanel */}
-        <div className="w-full md:w-1/2 min-h-[55vh] md:h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col relative z-20">
+        {/* FIXED: Added md:overflow-y-auto here to allow scrolling on desktop */}
+        <div className="w-full md:w-1/2 min-h-[55vh] md:h-full md:overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col relative z-20 custom-scrollbar">
           {/* Control Bar */}
-          <div className="p-4 md:p-6 border-b border-slate-700/50 bg-slate-800/20">
+          <div className="p-4 md:p-6 border-b border-slate-700/50 bg-slate-800/20 sticky top-0 z-30 backdrop-blur-md">
             <div className="flex flex-wrap items-center gap-2 md:gap-3">
               {mode !== "daily" && (
                 <button
@@ -584,7 +584,7 @@ export default function MusclePage() {
             )}
 
           {/* GuessPanel container panel */}
-          <div className="flex-1 p-2 md:p-0">
+          <div className="flex-1 p-4 md:p-6">
             <GuessPanel
               ref={guessRef}
               currentSlug={currentSlug}
